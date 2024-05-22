@@ -2,8 +2,8 @@
 const props = defineProps<{
   shortened_urls: {
     url_id: number;
-    original_url: string;
-    shortened_url: string;
+    long_url: string;
+    short_url: string;
     creation_date: string;
     user_id: number;
     expiration_date: string;
@@ -28,8 +28,8 @@ const props = defineProps<{
       <tbody>
         <tr v-for="url in shortened_urls" :key="url.url_id">
           <td>{{ url.url_id }}</td>
-          <td>{{ url.original_url }}</td>
-          <td>{{ url.shortened_url }}</td>
+          <td>{{ url.long_url }}</td>
+          <td>{{ url.short_url }}</td>
           <td>{{ new Date(url.creation_date).toLocaleDateString() }}</td>
           <td>{{ url.user_id }}</td>
           <td>{{ new Date(url.expiration_date).toLocaleDateString() }}</td>
