@@ -1,54 +1,42 @@
-<script setup>
-const supabase = useSupabaseClient();
+<script setup lang="ts">
+import LinksDashboard from "~/components/LinksDashboard.vue";
+import CreateLink from "~/components/CreateLink.vue";
+const client = useSupabaseClient();
+const shortened_urls = ref();
+const activeSite = ref<"table" | "create">("create");
+async function getShortenedUrls() {
+  const { data } = await client.from("shortened_urls").select();
+  shortened_urls.value = data;
+}
 
-const loading = ref(false);
-const email = ref("");
-
-const handleLogin = async () => {
-  try {
-    loading.value = true; // Start loading
-    if (!email.value) {
-      throw new Error("Email is required");
-    }
-    const { error } = await supabase.auth.signInWithOtp({ email: email.value });
-
-    if (error) {
-      throw error;
-    }
-
-    alert("Check your email for the login link!");
-  } catch (error) {
-    // Use a default message if error_description is not available
-    const errorMessage =
-      error.error_description || error.message || "An unknown error occurred";
-    alert(errorMessage);
-  } finally {
-    loading.value = false; // Stop loading
-  }
-};
+onMounted(() => {
+  getShortenedUrls();
+});
 </script>
 
 <template>
-  <form class="row flex-center flex" @submit.prevent="handleLogin">
-    <div class="col-6 form-widget">
-      <h1 class="header">Supabase + Nuxt 3</h1>
-      <p class="description">Sign in via magic link with your email below</p>
-      <div>
-        <input
-          class="inputField"
-          type="email"
-          placeholder="Your email"
-          v-model="email"
-        />
+  <template>
+    <div class="flex flex-col items-center self-center mx-auto p-4">
+      <div class="space-x-4 mb-4">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          @click="activeSite = 'table'"
+        >
+          Table
+        </button>
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          @click="activeSite = 'create'"
+        >
+          Create
+        </button>
       </div>
-      <div>
-        <input
-          type="submit"
-          class="button block"
-          :value="loading ? 'Loading' : 'Send magic link'"
-          :disabled="loading"
-        />
-      </div>
+
+      <LinksDashboard
+        v-if="activeSite === 'table'"
+        :shortened_urls="shortened_urls"
+      />
+      <CreateLink v-if="activeSite === 'create'" />
     </div>
-  </form>
+  </template>
 </template>
