@@ -5,9 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@nuxtbase/auth-ui-vue':
+    specifier: ^0.3.7
+    version: 0.3.7(@supabase/auth-ui-shared@0.1.8)(@supabase/supabase-js@2.43.0)
   '@nuxtjs/supabase':
     specifier: ^1.2.2
     version: 1.2.2
+  '@supabase/auth-ui-shared':
+    specifier: ^0.1.8
+    version: 0.1.8(@supabase/supabase-js@2.43.0)
   nuxt:
     specifier: ^3.11.2
     version: 3.11.2(@opentelemetry/api@1.8.0)(@unocss/reset@0.60.3)(floating-vue@5.2.2)(unocss@0.60.3)(vite@5.2.11)
@@ -1136,6 +1142,16 @@ packages:
       - vue-tsc
     dev: false
 
+  /@nuxtbase/auth-ui-vue@0.3.7(@supabase/auth-ui-shared@0.1.8)(@supabase/supabase-js@2.43.0):
+    resolution: {integrity: sha512-HpY+pai9lXItIlvj0OrHT7hgF+gmEgO5qXLxq/fmJVGqaDP5FB1cJ7Q0K2HTVyU/tFU3x6XygJUYjmR1OzAlvw==}
+    peerDependencies:
+      '@supabase/auth-ui-shared': ^0.1.8
+      '@supabase/supabase-js': ^2.42.7
+    dependencies:
+      '@supabase/auth-ui-shared': 0.1.8(@supabase/supabase-js@2.43.0)
+      '@supabase/supabase-js': 2.43.0
+    dev: false
+
   /@nuxtjs/supabase@1.2.2:
     resolution: {integrity: sha512-DNEuB7YXaOhV118bNway6SUpQLGq0zsK1kzddyETrwx3dHz+7etEw+QKU7iVs/GZog9Q7xkUQtGhcEQYaTZ71w==}
     dependencies:
@@ -1753,6 +1769,14 @@ packages:
     resolution: {integrity: sha512-tA2PXLoWEzhD0N1Vysree+HftfeWBbFV0E+taND5rj/pZTjkwKq/9GlrnXkbs5pnw+tsnABDRo2WLZmymihGdA==}
     dependencies:
       '@supabase/node-fetch': 2.6.15
+    dev: false
+
+  /@supabase/auth-ui-shared@0.1.8(@supabase/supabase-js@2.43.0):
+    resolution: {integrity: sha512-ouQ0DjKcEFg+0gZigFIEgu01V3e6riGZPzgVD0MJsCBNsMsiDT74+GgCEIElMUpTGkwSja3xLwdFRFgMNFKcjg==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.21.0
+    dependencies:
+      '@supabase/supabase-js': 2.43.0
     dev: false
 
   /@supabase/functions-js@2.3.1:

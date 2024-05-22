@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtbase/auth-ui-vue": "^0.3.7",
     "@nuxtjs/supabase": "^1.2.2",
+    "@supabase/auth-ui-shared": "^0.1.8",
     "nuxt": "^3.11.2",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"

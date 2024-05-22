@@ -4,7 +4,6 @@ const shortened_urls = ref();
 
 async function getShortenedUrls() {
   const { data } = await client.from("shortened_urls").select();
-
   shortened_urls.value = data;
 }
 
@@ -13,6 +12,4 @@ onMounted(() => {
 });
 </script>
 
-<template>
-  <pre>{{ shortened_urls }}</pre>
-</template>
+<template><NuxtPage /></template>
