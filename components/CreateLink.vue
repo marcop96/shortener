@@ -4,16 +4,19 @@ const supabase = useSupabaseClient();
 const long_url = ref("");
 const short_url = ref("");
 const url_id = ref("");
-
+const user_id = (await supabase.auth.getUser()).data.user?.id;
 const shortenLink = async () => {
   console.log(long_url.value);
+  console.log(short_url.value);
+  console.log(url_id.value);
+  console.log(user_id);
 
   const { data, error } = await supabase.from("shortened_urls").insert([
     {
       long_url: long_url.value,
-      short_url: "38493e3",
-      url_id: 45,
-      user_id: 129,
+      short_url: short_url.value,
+      url_id: Number(Math.random().toString(36).substring(7)),
+      user_id: (await supabase.auth.getUser()).data.user?.id,
       usage_count: 0,
     },
   ]);
