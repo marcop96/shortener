@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { v4 as uuidv4 } from 'uuid';
+
 const supabase = useSupabaseClient();
 const long_url = ref("");
 const short_url = ref("");
 const user_id = (await supabase.auth.getUser()).data.user?.id;
+console.log(uuidv4())
 
-console.log(user_id);
 const shortenLink = async () => {
-
+console.log(long_url.value, short_url.value, user_id)
   const { data, error } = await supabase.from("shortened_urls").insert([
     {
       long_url: long_url.value,
-      short_url: short_url.value,
-      url_id:
-      user_id,
+       short_url: Math.random().toString(36).substring(7),
+      url_id: uuidv4(),
+      user_id:user_id,
       usage_count: 0,
     },
   ]);
