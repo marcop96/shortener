@@ -8,7 +8,7 @@ definePageMeta({
 })
 watchEffect(() => {
   if (useSupabaseUser().value) {
-    navigateTo('/')
+    setTimeout(()=> navigateTo('/'), 1000)
   }
 })
 const loading = ref(false);

@@ -38,7 +38,7 @@ watch(user, (newUser) => {
 });
 </script>
 
-<template>
+
   <template>
     <div class="flex flex-col items-center self-center mx-auto p-4">
       <div class="space-x-4 mb-4">
@@ -63,4 +63,4 @@ watch(user, (newUser) => {
       <CreateLink v-if="activeSite === 'create'" />
     </div>
   </template>
-</template>
+
