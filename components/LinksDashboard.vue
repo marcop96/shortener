@@ -27,7 +27,7 @@ const props = defineProps<{
       </thead>
       <tbody>
         <tr v-for="url in shortened_urls" :key="url.url_id">
-          <td>{{ url.url_id }}</td>
+          <td>x xx{{ url.url_id }}</td>
           <td>{{ url.long_url }}</td>
           <td>{{ url.short_url }}</td>
           <td>{{ new Date(url.creation_date).toLocaleDateString() }}</td>
