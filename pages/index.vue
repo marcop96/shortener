@@ -2,11 +2,25 @@
 import LinksDashboard from "~/components/LinksDashboard.vue";
 import CreateLink from "~/components/CreateLink.vue";
 const client = useSupabaseClient();
+const user = useSupabaseUser();
+
 const shortened_urls = ref();
 const activeSite = ref<"table" | "create">("create");
 async function getShortenedUrls() {
-  const { data } = await client.from("shortened_urls").select();
-  shortened_urls.value = data;
+  if (user.value) {
+    const { data, error } = await client
+      .from("shortened_urls")
+      .select()
+      .eq("user_id", user.value.id);
+
+    if (error) {
+      console.error("Error fetching shortened URLs:", error);
+    } else {
+      shortened_urls.value = data;
+    }
+  } else {
+    console.error("User is not logged in.");
+  }
 }
 
 onMounted(() => {
