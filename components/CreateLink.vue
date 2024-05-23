@@ -13,7 +13,7 @@ console.log(long_url.value, short_url.value, user_id)
   const { data, error } = await supabase.from("shortened_urls").insert([
     {
       long_url: long_url.value,
-       short_url: Math.random().toString(36).substring(7),
+      short_url: Math.random().toString(36).substring(7),
       url_id: uuidv4(),
       user_id:user_id,
       usage_count: 0,
