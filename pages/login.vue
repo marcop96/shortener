@@ -3,7 +3,9 @@ import { Auth } from "@nuxtbase/auth-ui-vue";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 
 const supabase = useSupabaseClient();
-
+definePageMeta({
+  middleware: ['auth']
+})
 const loading = ref(false);
 const email = ref("");
 const password = ref("");
@@ -30,19 +32,19 @@ const password = ref("");
 // };
 const handleLogin = async () => {
   loading.value = true
-  const { error }  = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value
-  })
+  const { data, error } = await supabase.auth.signInWithOAuth({
+  provider: 'google',
+  options: {
+    redirectTo: '/'
+  }
+})
   if (error) {
     loading.value = false
-   alert('Invalid login credentials')
+    alert('Invalid login credentials')
   } else {
     loading.value = false
     alert('Login successful')
-    nextTick(() => {
-navigateTo('/')    })
-    
+    return navigateTo('/')    
   }
 }
 
@@ -50,7 +52,7 @@ navigateTo('/')    })
 </script>
 <template>
   <main class="">
-    <div class="flex flex-col items-center self-center mx-auto p-4">
+    <!-- <div class="flex flex-col items-center self-center mx-auto p-4">
       <h1 class="text-2xl font-bold mb-4">Login</h1>
       <form @submit.prevent="handleLogin">
 
@@ -69,13 +71,13 @@ navigateTo('/')    })
         Login
       </button>
       </form>
-      </div>
-    <!-- <Auth @update:view="console.log($event)"
+      </div> -->
+  <Auth @update:view="console.log($event)"
       :supabaseClient="supabase"
       :appearance="{
         theme: ThemeSupa,
       }"
-      :providers="['google', 'facebook', 'twitter']"
-    /> -->
+      :providers="['google', 'github', 'twitter']"
+    /> 
   </main>
 </template>

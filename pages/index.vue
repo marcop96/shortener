@@ -3,9 +3,12 @@ import LinksDashboard from "~/components/LinksDashboard.vue";
 import CreateLink from "~/components/CreateLink.vue";
 const client = useSupabaseClient();
 const user = useSupabaseUser();
-
-const shortened_urls = ref();
 const activeSite = ref<"table" | "create">("create");
+const shortened_urls = ref();
+// definePageMeta({
+//   middleware: ['auth']
+// });
+
 async function getShortenedUrls() {
   if (user.value) {
     const { data, error } = await client
