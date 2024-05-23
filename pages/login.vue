@@ -6,6 +6,11 @@ const supabase = useSupabaseClient();
 definePageMeta({
   middleware: ['auth']
 })
+watchEffect(() => {
+  if (useSupabaseUser().value) {
+    navigateTo('/')
+  }
+})
 const loading = ref(false);
 const email = ref("");
 const password = ref("");
