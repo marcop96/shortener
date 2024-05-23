@@ -27,9 +27,11 @@ const props = defineProps<{
       </thead>
       <tbody>
         <tr v-for="url in shortened_urls" :key="url.url_id">
-          <td>x xx{{ url.url_id }}</td>
+          <td>{{ url.url_id }}</td>
           <td>{{ url.long_url }}</td>
-          <td>{{ url.short_url }}</td>
+          <td>
+            <NuxtLink :to="url.short_url">{{ url.short_url }}</NuxtLink>
+          </td>
           <td>{{ new Date(url.creation_date).toLocaleDateString() }}</td>
           <td>{{ url.user_id }}</td>
           <td>{{ new Date(url.expiration_date).toLocaleDateString() }}</td>
