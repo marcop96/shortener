@@ -25,7 +25,10 @@ async function getShortenedUrls() {
     console.error("User is not logged in.");
   }
 }
-
+function swapTabs(tab: "table" | "create") {
+  activeSite.value = tab;
+  getShortenedUrls();
+}
 onMounted(() => {
   getShortenedUrls();
 });
@@ -38,29 +41,27 @@ watch(user, (newUser) => {
 });
 </script>
 
-
-  <template>
-    <div class="flex flex-col items-center self-center mx-auto p-4">
-      <div class="space-x-4 mb-4">
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          @click="activeSite = 'table'"
-        >
-          Table
-        </button>
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          @click="activeSite = 'create'"
-        >
-          Create
-        </button>
-      </div>
-
-      <LinksDashboard
-        v-if="activeSite === 'table'"
-        :shortened_urls="shortened_urls"
-      />
-      <CreateLink v-if="activeSite === 'create'" />
+<template>
+  <div class="flex flex-col items-center self-center mx-auto p-4">
+    <div class="space-x-4 mb-4">
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        @click="swapTabs('table')"
+      >
+        Table
+      </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        @click="swapTabs('create')"
+      >
+        Create
+      </button>
     </div>
-  </template>
 
+    <LinksDashboard
+      v-if="activeSite === 'table'"
+      :shortened_urls="shortened_urls"
+    />
+    <CreateLink v-if="activeSite === 'create'" />
+  </div>
+</template>
