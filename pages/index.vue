@@ -26,6 +26,13 @@ async function getShortenedUrls() {
 onMounted(() => {
   getShortenedUrls();
 });
+watch(user, (newUser) => {
+  if (newUser) {
+    getShortenedUrls();
+  } else {
+    shortened_urls.value = [];
+  }
+});
 </script>
 
 <template>
