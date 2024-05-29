@@ -6,10 +6,19 @@ const supabase = useSupabaseClient();
 const long_url = ref("");
 const short_url = ref("");
 const user_id = (await supabase.auth.getUser()).data.user?.id;
-console.log(uuidv4())
-
+function isValidUrl(url: string): boolean {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 const shortenLink = async () => {
-console.log(long_url.value, short_url.value, user_id)
+  if(!isValidUrl(long_url.value)) {
+    alert("Invalid URL");
+    return;
+  }
   const { data, error } = await supabase.from("shortened_urls").insert([
     {
       long_url: long_url.value,
@@ -19,6 +28,7 @@ console.log(long_url.value, short_url.value, user_id)
       usage_count: 0,
     },
   ]);
+  long_url.value = "";
 };
 </script>
 <template>
