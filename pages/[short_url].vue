@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import type { Row } from '~/types';
 
 const client = useSupabaseClient();
 const route = useRoute();
@@ -18,9 +18,9 @@ async function getLongUrl() {
     }
 
     if (data && data.length > 0) {
-      //update usage count 
-      await client.from('shortened_urls').update({ usage_count: data[0].usage_count + 1 }).eq('short_url', route.params.short_url);
-      path.value  = data[0].long_url;
+      const row:Row = data[0]
+      await client.from('shortened_urls').update({ usage_count: row.usage_count + 1 }).eq('short_url', route.params.short_url);
+      path.value = row.long_url;
     } else {
       console.error('No data found');
     }
