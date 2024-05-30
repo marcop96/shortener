@@ -15,17 +15,15 @@ async function deleteRow(row: Row) {
       .delete()
       .eq('url_id', row.url_id);
 
-    if (error) {
-      console.error(error.message)
-    } else {
-      // Update the list immediately
       updatedList.value = updatedList.value.filter(item => item.url_id !== row.url_id);
-    }
+  
   } catch (err) {
     console.error("Unexpected error:", err);
   }
 }
-
+watch(() => props.shortened_urls, (newUrls) => {
+  updatedList.value = newUrls;
+});
 </script>
 
 <template>
