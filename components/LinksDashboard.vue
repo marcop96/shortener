@@ -41,7 +41,7 @@ const props = defineProps<{
     </table>
   </div>
 </template>
-<style scoped>
+<style >
 table {
   width: 100%;
   border-collapse: collapse;

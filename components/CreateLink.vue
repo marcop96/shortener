@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { v4 as uuidv4 } from 'uuid';
+import type { Row } from "~/types";
 
 const supabase = useSupabaseClient();
 const long_url = ref("");
-const short_url = ref("");
 const user_id = (await supabase.auth.getUser()).data.user?.id;
+
+const newUrl = ref<undefined | Row>(undefined);
+
 function isValidUrl(url: string): boolean {
   try {
     new URL(url);
@@ -19,20 +22,22 @@ const shortenLink = async () => {
     alert("Invalid URL");
     return;
   }
-  const { data, error } = await supabase.from("shortened_urls").insert([
-    {
+newUrl.value =   {
       long_url: long_url.value,
       short_url: Math.random().toString(36).substring(7),
       url_id: uuidv4(),
-      user_id:user_id,
+      creation_date: new Date().toISOString(),
+      user_id: user_id ?? '',
       usage_count: 0,
-    },
+    }
+  const { data, error } = await supabase.from("shortened_urls").insert([
+    newUrl.value,
   ]);
   long_url.value = "";
 };
 </script>
 <template>
-  <div>
+  <main class="my-16">
     <form @submit.prevent="shortenLink">
       <input
         type="text"
@@ -44,7 +49,30 @@ const shortenLink = async () => {
         Shorten
       </button>
     </form>
-  </div>
+  </main>
+
+  <section class="flex items-center justify-center mx-12">
+    <table v-if="newUrl" class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+      <thead>
+        <tr>
+          <th>Original URL</th>
+          <th>Shortened URL</th>
+          <th>Date</th>
+          <th>Clicks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <NuxtLink :to="newUrl.short_url">{{ newUrl.short_url }}</NuxtLink>
+          </td>
+          <td class="max-w-1/3 overflow-hidden">{{ newUrl.long_url }}</td>
+          <td>{{ newUrl.creation_date }}</td>
+          <td>{{ newUrl.usage_count }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 </template>
 
 <style scoped>
