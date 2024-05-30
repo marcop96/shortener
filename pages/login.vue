@@ -77,12 +77,14 @@ const handleLogin = async () => {
       </button>
       </form>
       </div> -->
-  <Auth @update:view="console.log($event)"
-      :supabaseClient="supabase"
-      :appearance="{
-        theme: ThemeSupa,
-      }"
+      <div class='flex flex-col items-center self-center mx-auto p-4'>
+        <Auth @update:view="console.log($event) "
+        :supabaseClient="supabase"
+        :appearance="{
+          theme: ThemeSupa,
+        }"
       :providers="['google', 'github', 'twitter']"
-    /> 
+      /> 
+    </div>
   </main>
 </template>
