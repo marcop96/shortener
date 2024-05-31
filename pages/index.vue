@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import LinksDashboard from "~/components/LinksDashboard.vue";
 import CreateLink from "~/components/CreateLink.vue";
+import { ref, watch, onMounted } from 'vue';
+
 const client = useSupabaseClient();
 const user = useSupabaseUser();
 const activeSite = ref<"table" | "create">("create");
-const shortened_urls = ref();
-// definePageMeta({
-//   middleware: ['auth']
-// });
+const shortened_urls = ref([]);
 
 async function getShortenedUrls() {
   if (user.value) {
@@ -25,13 +24,16 @@ async function getShortenedUrls() {
     console.error("User is not logged in.");
   }
 }
+
 function swapTabs(tab: "table" | "create") {
   activeSite.value = tab;
   getShortenedUrls();
 }
+
 onMounted(() => {
   getShortenedUrls();
 });
+
 watch(user, (newUser) => {
   if (newUser) {
     getShortenedUrls();
@@ -42,7 +44,7 @@ watch(user, (newUser) => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center self-center mx-auto p-4">
+  <div class="flex flex-col items-center self-center mx-auto p-4 min-h-screen">
     <div class="space-x-4 mb-4">
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -57,11 +59,28 @@ watch(user, (newUser) => {
         Create
       </button>
     </div>
-
-    <LinksDashboard
-      v-if="activeSite === 'table'"
-      :shortened_urls="shortened_urls"
-    />
-    <CreateLink v-if="activeSite === 'create'" />
+    <div class="relative w-full">
+      <Transition name="fade">
+        <LinksDashboard
+          v-if="activeSite === 'table'"
+          :shortened_urls="shortened_urls"
+        />
+      </Transition>
+      <Transition name="fade">
+        <CreateLink v-if="activeSite === 'create'" />
+      </Transition>
+    </div>
   </div>
 </template>
+
+<style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>
