@@ -76,7 +76,8 @@ const shortenLink = async () => {
             <td>
               <NuxtLink :to="newUrl.short_url" target="_blank">{{ newUrl.short_url }}</NuxtLink>
             </td>
-            <td class="max-w-1/3 overflow-hidden">{{ newUrl.long_url }}</td>
+            <td class="max-w-1/3 overflow-hidden">              <NuxtLink :to="newUrl.long_url" target="_blank">{{ newUrl.long_url }}</NuxtLink>
+</td>
             <td>{{ newUrl.creation_date }}</td>
             <td>{{ newUrl.usage_count }}</td>
           </tr>

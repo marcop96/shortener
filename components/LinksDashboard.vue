@@ -40,7 +40,7 @@ watch(() => props.shortened_urls, (newUrls) => {
       </thead>
       <tbody>
         <tr v-for="url in updatedList" :key="url.url_id">
-          <td class="w-12 overflow-hidden max-w-96">{{ url.long_url }}</td>
+          <td class="w-12 overflow-hidden max-w-96"><NuxtLink :to="url.long_url" target="_blank">{{ url.long_url }}</NuxtLink></td>
           <td>
             <NuxtLink :to="url.short_url" target="_blank">{{ url.short_url }}</NuxtLink>
           </td>
