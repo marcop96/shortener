@@ -22,7 +22,10 @@ const shortenLink = async () => {
     alert("Invalid URL");
     return;
   }
-  
+  if(user_id === undefined) {
+    alert("User is not logged in.");
+    return;
+  }
   newUrl.value = {
     long_url: long_url.value,
     short_url: Math.random().toString(36).substring(7),
@@ -71,7 +74,7 @@ const shortenLink = async () => {
         <tbody>
           <tr>
             <td>
-              <NuxtLink :to="newUrl.short_url">{{ newUrl.short_url }}</NuxtLink>
+              <NuxtLink :to="newUrl.short_url" target="_blank">{{ newUrl.short_url }}</NuxtLink>
             </td>
             <td class="max-w-1/3 overflow-hidden">{{ newUrl.long_url }}</td>
             <td>{{ newUrl.creation_date }}</td>

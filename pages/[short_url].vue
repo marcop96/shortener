@@ -33,10 +33,10 @@ onBeforeMount(async () => {
   await getLongUrl();
   console.log(path.value);
   if (path.value) {
-    // window.location.replace(path.value);
-    navigateTo(path.value, { external: true });
-  }
-});
+  await navigateTo(path.value,
+    { 
+      external: true,
+    })}})
 </script>
 
 <template>

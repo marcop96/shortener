@@ -42,7 +42,7 @@ watch(() => props.shortened_urls, (newUrls) => {
         <tr v-for="url in updatedList" :key="url.url_id">
           <td class="w-12 overflow-hidden max-w-96">{{ url.long_url }}</td>
           <td>
-            <NuxtLink :to="url.short_url">{{ url.short_url }}</NuxtLink>
+            <NuxtLink :to="url.short_url" target="_blank">{{ url.short_url }}</NuxtLink>
           </td>
           <td>{{ new Date(url.creation_date).toLocaleDateString() }}</td>
           <td>{{ url.usage_count }}</td>
