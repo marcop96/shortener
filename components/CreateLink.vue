@@ -4,26 +4,28 @@ import { v4 as uuidv4 } from 'uuid';
 import type { Row } from '~/types';
 
 const supabase = useSupabaseClient();
-const long_url = ref("");
-const user_id = (await supabase.auth.getUser()).data.user?.id;
-const newUrl = ref<undefined | Row>(undefined);
+const user_id = useSupabaseUser().value?.id;
 
+const long_url = ref("");
+const newUrl = ref<undefined | Row>(undefined);
 function isValidUrl(url: string): boolean {
   try {
     new URL(url);
     return true;
   } catch (e) {
+    alert("Invalid URL");
     return false;
   }
 }
-
-const shortenLink = async () => {
-  if (!isValidUrl(long_url.value)) {
-    alert("Invalid URL");
+function checkUser () {
+  if(user_id === undefined || user_id === null) {
+    alert("User is not logged in.");
     return;
   }
-  if(user_id === undefined) {
-    alert("User is not logged in.");
+}
+const shortenLink = async () => {
+  checkUser()
+  if (!isValidUrl(long_url.value)) {
     return;
   }
   newUrl.value = {
