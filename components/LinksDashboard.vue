@@ -42,7 +42,9 @@ watch(() => props.shortened_urls, (newUrls) => {
 <template>
   <div class="flex items-center w-full">
     <Table class="w-1/2 justify-center mx-auto ">
-      <TableCaption>List of your Links</TableCaption>
+      <TableCaption v-if="updatedList.length > 0">List of your Links</TableCaption>
+      <TableCaption v-else>Create a short URL to see them here</TableCaption>
+
       <TableHeader>
         <TableRow>
           <TableHead>Original URL</TableHead>
