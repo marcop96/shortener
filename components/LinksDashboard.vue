@@ -1,113 +1,79 @@
 <script setup lang="ts">
-import type { Row } from '~/types';
-
+ import type { Row } from '~/types';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 const client = useSupabaseClient();
 const props = defineProps<{
   shortened_urls: Row[];
 }>();
 const updatedList = ref<Row[]>(props.shortened_urls);
-
 async function deleteRow(row: Row) {
   try {
-
     const { data, error } = await client
       .from('shortened_urls')
       .delete()
       .eq('url_id', row.url_id);
-
+    if (error) {
+      console.error(error.message)
+    } else {
+      // Update the list immediately
       updatedList.value = updatedList.value.filter(item => item.url_id !== row.url_id);
-  
+      console.log("Deleted row:", row)
+    }
   } catch (err) {
     console.error("Unexpected error:", err);
   }
 }
+
 watch(() => props.shortened_urls, (newUrls) => {
   updatedList.value = newUrls;
 });
+
 </script>
 
+
 <template>
-  <div class="table-container">
-    <table class="responsive-table">
-      <thead>
-        <tr>
-          <th>Original URL</th>
-          <th>Shortened URL</th>
-          <th>Creation Date</th>
-          <th>Clicks</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="url in updatedList" :key="url.url_id">
-          <td class="w-12 overflow-hidden max-w-96"><NuxtLink :to="url.long_url" target="_blank">{{ url.long_url }}</NuxtLink></td>
-          <td>
-            <NuxtLink :to="url.short_url" target="_blank">{{ url.short_url }}</NuxtLink>
-          </td>
-          <td>{{ new Date(url.creation_date).toLocaleDateString() }}</td>
-          <td>{{ url.usage_count }}</td>
-          <td>
-            <button @click="deleteRow(url)">X</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="flex items-center w-full">
+    <Table class="w-1/2 justify-center mx-auto ">
+      <TableCaption v-if="updatedList.length > 0">List of your Links</TableCaption>
+      <TableCaption v-else>Create a short URL to see them here</TableCaption>
+
+      <TableHeader>
+        <TableRow>
+          <TableHead>Original URL</TableHead>
+          <TableHead>Short URL</TableHead>
+          <TableHead>Creation Date</TableHead>
+          <TableHead>Clicks</TableHead>
+          <TableHead>Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow v-for="url in updatedList">
+          <TableCell class="font-medium w-2/4">
+            <NuxtLink :to="url.long_url" target="_blank">{{ url.long_url }}</NuxtLink>
+          </TableCell>
+          <TableCell> <NuxtLink :to="url.short_url" target="_blank">{{ url.short_url }}</NuxtLink></TableCell>
+          <TableCell>{{ new Date(url.creation_date).toLocaleDateString() }}</TableCell>
+          <TableCell class="text-right">
+            {{url.usage_count}}
+          </TableCell>
+          <TableCell>
+            <button @click="deleteRow(url)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              Delete
+            </button></TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   </div>
-</template>
+</template> 
 
 <style scoped>
-.table-container {
-  overflow-x: auto;
-}
 
-.responsive-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.responsive-table th,
-.responsive-table td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-
-.responsive-table th {
-  background-color: #037516;
-  color: white;
-}
-
-.responsive-table tr:hover {
-  background-color: #cecece;
-}
-
-@media (max-width: 600px) {
-  .responsive-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .responsive-table thead,
-  .responsive-table tbody,
-  .responsive-table th,
-  .responsive-table td,
-  .responsive-table tr {
-    display: block;
-  }
-
-  .responsive-table th {
-    text-align: left;
-  }
-
-  .responsive-table td {
-    border-top: none;
-  }
-
-  .responsive-table td:before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-  }
-}
 </style>

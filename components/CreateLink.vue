@@ -47,8 +47,8 @@ const shortenLink = async () => {
 
 <template>
   <div class="relative">
-    <main>
-      <form @submit.prevent="shortenLink">
+    <main class="flex justify-center">
+      <form @submit.prevent="shortenLink" class="mx-auto ">
         <input
           type="text"
           v-model="long_url"
@@ -62,27 +62,33 @@ const shortenLink = async () => {
     </main>
 
     <section v-if="newUrl" class="flex items-center justify-center mx-12 mt-4">
-      <table class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-        <thead>
-          <tr>
-            <th>Original URL</th>
-            <th>Shortened URL</th>
-            <th>Date</th>
-            <th>Clicks</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <NuxtLink :to="newUrl.short_url" target="_blank">{{ newUrl.short_url }}</NuxtLink>
-            </td>
-            <td class="max-w-1/3 overflow-hidden">              <NuxtLink :to="newUrl.long_url" target="_blank">{{ newUrl.long_url }}</NuxtLink>
-</td>
-            <td>{{ newUrl.creation_date }}</td>
-            <td>{{ newUrl.usage_count }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="flex items-center w-full">
+        <Table class="w-1/2 justify-center mx-auto">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Original URL</TableHead>
+              <TableHead>Short URL</TableHead>
+              <TableHead>Creation Date</TableHead>
+              <TableHead>Clicks</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell class="font-medium w-2/4">
+                  <NuxtLink :to="newUrl.long_url" target="_blank">{{ newUrl.long_url }}</NuxtLink>
+                </TableCell>
+                <TableCell>
+                  <NuxtLink :to="newUrl.short_url" target="_blank">{{ newUrl.short_url }}</NuxtLink>
+                </TableCell>
+                <TableCell>{{ new Date(newUrl.creation_date).toLocaleDateString() }}</TableCell>
+                <TableCell class="text-right">
+                  {{ newUrl.usage_count }}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+        </Table>
+      </div>
     </section>
   </div>
 </template>
