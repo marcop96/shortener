@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { Row } from '~/types';
+import type { Row } from "~/types";
 
 const client = useSupabaseClient();
 const route = useRoute();
-const path = ref<string>('');
+const path = ref<string>("");
 
 async function getLongUrl() {
   try {
     const { data, error } = await client
-      .from('shortened_urls')
+      .from("shortened_urls")
       .select()
-      .eq('short_url', route.params.short_url);
+      .eq("short_url", route.params.short_url);
 
     if (error) {
       console.error(error);
@@ -18,14 +18,17 @@ async function getLongUrl() {
     }
 
     if (data && data.length > 0) {
-      const row:Row = data[0]
-      await client.from('shortened_urls').update({ usage_count: row.usage_count + 1 }).eq('short_url', route.params.short_url);
+      const row: Row = data[0];
+      await client
+        .from("shortened_urls")
+        .update({ usage_count: row.usage_count + 1 })
+        .eq("short_url", route.params.short_url);
       path.value = row.long_url;
     } else {
-      console.error('No data found');
+      console.error("No data found");
     }
   } catch (error) {
-    console.error('Error fetching long URL:', error);
+    console.error("Error fetching long URL:", error);
   }
 }
 
@@ -33,17 +36,18 @@ onBeforeMount(async () => {
   await getLongUrl();
   console.log(path.value);
   if (path.value) {
-  await navigateTo(path.value,
-    { 
+    await navigateTo(path.value, {
       external: true,
-    })}})
+    });
+  }
+});
 </script>
 
 <template>
-<div class="lds-ripple"></div></template>
+  <div class="lds-ripple"></div>
+</template>
 
 <style scoped>
-
 .lds-ripple,
 .lds-ripple div {
   box-sizing: border-box;
@@ -94,5 +98,4 @@ onBeforeMount(async () => {
     opacity: 0;
   }
 }
-
 </style>
