@@ -1,90 +1,87 @@
 <script setup lang="ts">
-import { Auth } from "@nuxtbase/auth-ui-vue";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
-
-const supabase = useSupabaseClient();
-definePageMeta({
-  middleware: ['auth']
-})
-watchEffect(() => {
-  if (useSupabaseUser().value) {
-    setTimeout(()=> navigateTo('/'), 1000)
-  }
-})
-const loading = ref(false);
-const email = ref("");
-const password = ref("");
-
-// const handleLogin = async () => {
-//   try {
-//     loading.value = true;
-//     if (!email.value) {
-//       throw new Error("Email is required");
-//     }
-//     if(!password.value) {
-//       throw new Error("Password is required");
-//     }
-
-  
-
-//   } catch (error: any) {
-//     const errorMessage =
-//       error.error_description || error.message || "An unknown error occurred";
-//     alert(errorMessage);
-//   } finally {
-//     loading.value = false;
-//   }
-// };
-const handleLogin = async () => {
-  loading.value = true
-  const { data, error } = await supabase.auth.signInWithOAuth({
-  provider: 'google',
-  options: {
-    redirectTo: '/'
-  }
-})
-  if (error) {
-    loading.value = false
-    alert('Invalid login credentials')
-  } else {
-    loading.value = false
-    alert('Login successful')
-    return navigateTo('/')    
-  }
-}
-
-
+import UserAuthForm from "../components/UserAuthForm.vue";
+import { cn } from "@/lib/utils";
 </script>
-<template>
-  <main class="">
-    <!-- <div class="flex flex-col items-center self-center mx-auto p-4">
-      <h1 class="text-2xl font-bold mb-4">Login</h1>
-      <form @submit.prevent="handleLogin">
 
-        <input
-        v-model="email"
-        type="email"
-        placeholder="Email"
-        class="border border-gray-300 p-2 rounded mb-4"
-        />
-        <input v-model='password' type="password" placeholder="Password" class="border border-gray-300 p-2 rounded mb-4" />
-        <button
-        
-        :disabled="loading"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+<template>
+  <div class="md:hidden">
+    <!-- <img
+      alt="Authentication"
+      width="1280"
+      height="1214"
+      class="block"
+      :image="{
+        dark: '/examples/authentication-dark.png',
+        light: '/examples/authentication-light.png',
+      }"
+    /> -->
+  </div>
+
+  <div
+    class="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
+  >
+    <a href="/login" :class="cn('absolute right-4 top-4 md:right-8 md:top-8')">
+      Login
+    </a>
+    <div
+      class="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"
+    >
+      <div class="absolute inset-0 bg-zinc-900" />
+      <div class="relative z-20 flex items-center text-lg font-medium">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          class="mr-2 h-6 w-6"
         >
-        Login
-      </button>
-      </form>
-      </div> -->
-      <div class='flex flex-col items-center self-center mx-auto p-4'>
-        <Auth @update:view="console.log($event) "
-        :supabaseClient="supabase"
-        :appearance="{
-          theme: ThemeSupa,
-        }"
-      :providers="['google', 'github', 'twitter']"
-      /> 
+          <path
+            d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"
+          />
+        </svg>
+        Acme Inc
+      </div>
+      <div class="relative z-20 mt-auto">
+        <!-- <blockquote class="space-y-2">
+          <p class="text-lg">&ldquo;&rdquo;</p>
+          <footer class="text-sm">Marco Pianaroli</footer>
+        </blockquote> -->
+      </div>
     </div>
-  </main>
+    <div class="lg:p-8">
+      <div
+        class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]"
+      >
+        <div class="flex flex-col space-y-2 text-center">
+          <h1 class="text-2xl font-semibold tracking-tight">
+            Create an account
+          </h1>
+          <p class="text-sm text-muted-foreground">
+            Enter your email below to create your account
+          </p>
+        </div>
+        <UserAuthForm />
+        <p class="px-8 text-center text-sm text-muted-foreground">
+          By clicking continue, you agree to our
+          <a
+            href="/terms"
+            class="underline underline-offset-4 hover:text-primary"
+          >
+            Terms of Service
+          </a>
+          and
+          <a
+            href="/privacy"
+            class="underline underline-offset-4 hover:text-primary"
+          >
+            Privacy Policy
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </div>
 </template>
