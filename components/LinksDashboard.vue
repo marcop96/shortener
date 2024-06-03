@@ -31,6 +31,7 @@ watch(() => props.shortened_urls, (newUrls) => {
     <table class="responsive-table">
       <thead>
         <tr>
+          
           <th>Original URL</th>
           <th>Shortened URL</th>
           <th>Creation Date</th>
