@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "~/components/ui/toast/use-toast";
+import { Toaster, ToastAction } from "~/components/ui/toast";
+const toast = useToast();
 const supabase = useSupabaseClient();
 const loginEmail = ref("");
 const loginPassword = ref("");
@@ -29,6 +32,7 @@ async function loginHandler(email: string, password: string) {
 </script>
 
 <template>
+  <Toaster />
   <div class="flex justify-center items-center w-1/2 mx-auto p-4">
     <Card>
       <CardHeader class="space-y-1">
