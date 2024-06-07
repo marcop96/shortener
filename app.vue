@@ -1,9 +1,11 @@
-<script setup lang="ts">useHead({
-  title: 'URL Redirect',
-  meta: [
-    { name: 'A site to create short versions of URL' }
-  ]
-})
+<script setup lang="ts">
+useHead({
+  title: "URL Redirect",
+  meta: [{ name: "A site to create short versions of URL" }],
+});
 </script>
 
-<template><NuxtPage /></template>
+<template>
+  <NuxtLayout> </NuxtLayout>
+  <NuxtPage />
+</template>
