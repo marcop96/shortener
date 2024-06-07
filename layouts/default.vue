@@ -4,4 +4,5 @@ const user = useSupabaseUser();
 
 <template>
   <pre v-if="user">{{ user.role }}</pre>
+  <span v-else>Not logged in</span>
 </template>
