@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { v4 as uuidv4 } from 'uuid';
-import type { Row } from '~/types';
+import { ref } from "vue";
+import { v4 as uuidv4 } from "uuid";
+import type { Row } from "~/types";
 
 const supabase = useSupabaseClient();
 const user_id = useSupabaseUser().value?.id;
@@ -17,14 +17,14 @@ function isValidUrl(url: string): boolean {
     return false;
   }
 }
-function checkUser () {
-  if(user_id === undefined || user_id === null) {
+function checkUser() {
+  if (user_id === undefined || user_id === null) {
     alert("User is not logged in.");
     return;
   }
 }
 const shortenLink = async () => {
-  checkUser()
+  checkUser();
   if (!isValidUrl(long_url.value)) {
     return;
   }
@@ -37,7 +37,9 @@ const shortenLink = async () => {
     usage_count: 0,
   };
 
-  const { error } = await supabase.from("shortened_urls").insert([newUrl.value]);
+  const { error } = await supabase
+    .from("shortened_urls")
+    .insert([newUrl.value]);
 
   if (error) {
     console.error("Error creating shortened URL:", error);
@@ -50,14 +52,17 @@ const shortenLink = async () => {
 <template>
   <div class="relative">
     <main class="flex justify-center">
-      <form @submit.prevent="shortenLink" class="mx-auto ">
+      <form @submit.prevent="shortenLink" class="mx-auto">
         <input
           type="text"
           v-model="long_url"
           placeholder="Enter URL"
           class="p-2 border border-gray-300 rounded-md mb-4"
         />
-        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+        <button
+          type="submit"
+          class="px-4 py-2 bg-blue-500 text-white rounded-md"
+        >
           Shorten
         </button>
       </form>
@@ -74,26 +79,31 @@ const shortenLink = async () => {
               <TableHead>Clicks</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell class="font-medium w-2/4">
-                  <NuxtLink :to="newUrl.long_url" target="_blank">{{ newUrl.long_url }}</NuxtLink>
-                </TableCell>
-                <TableCell>
-                  <NuxtLink :to="newUrl.short_url" target="_blank">{{ newUrl.short_url }}</NuxtLink>
-                </TableCell>
-                <TableCell>{{ new Date(newUrl.creation_date).toLocaleDateString() }}</TableCell>
-                <TableCell class="text-right">
-                  {{ newUrl.usage_count }}
-                </TableCell>
-              </TableRow>
-            </TableBody>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell class="font-medium w-2/4">
+                <NuxtLink :to="newUrl.long_url" target="_blank">{{
+                  newUrl.long_url
+                }}</NuxtLink>
+              </TableCell>
+              <TableCell>
+                <NuxtLink :to="newUrl.short_url" target="_blank">{{
+                  newUrl.short_url
+                }}</NuxtLink>
+              </TableCell>
+              <TableCell>{{
+                new Date(newUrl.creation_date).toLocaleDateString()
+              }}</TableCell>
+              <TableCell class="text-right">
+                {{ newUrl.usage_count }}
+              </TableCell>
+            </TableRow>
+          </TableBody>
         </Table>
       </div>
     </section>
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
