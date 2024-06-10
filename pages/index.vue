@@ -48,13 +48,13 @@ watch(user, (newUser) => {
     <div class="space-x-4 mb-4">
       <Button
         @click="swapTabs('table')"
-        :variant="activeSite === 'table' ? 'default' : 'secondary'"
+        :variant="activeSite === 'table' ? 'default' : 'ghost'"
       >
         Table
       </Button>
       <Button
         @click="swapTabs('create')"
-        :variant="activeSite === 'create' ? 'default' : 'secondary'"
+        :variant="activeSite === 'create' ? 'default' : 'ghost'"
         >Create</Button
       >
     </div>
