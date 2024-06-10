@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LinksDashboard from "~/components/LinksDashboard.vue";
 import CreateLink from "~/components/CreateLink.vue";
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted } from "vue";
 
 const client = useSupabaseClient();
 const user = useSupabaseUser();
@@ -46,18 +46,17 @@ watch(user, (newUser) => {
 <template>
   <div class="flex flex-col items-center self-center mx-auto p-4 min-h-screen">
     <div class="space-x-4 mb-4">
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      <Button
         @click="swapTabs('table')"
+        :variant="activeSite === 'table' ? 'default' : 'secondary'"
       >
         Table
-      </button>
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      </Button>
+      <Button
         @click="swapTabs('create')"
+        :variant="activeSite === 'create' ? 'default' : 'secondary'"
+        >Create</Button
       >
-        Create
-      </button>
     </div>
     <div class="relative w-full">
       <Transition name="fade">
@@ -82,5 +81,10 @@ watch(user, (newUser) => {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+.active {
+  color: white;
+  border-bottom: 2px solid #000;
 }
 </style>
