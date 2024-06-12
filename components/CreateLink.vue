@@ -57,14 +57,9 @@ const shortenLink = async () => {
           type="text"
           v-model="long_url"
           placeholder="Enter URL"
-          class="p-2 border border-gray-300 rounded-md mb-4"
+          class="p-1 border border-gray-300 rounded-md mb-4"
         />
-        <button
-          type="submit"
-          class="px-4 py-2 bg-blue-500 text-white rounded-md"
-        >
-          Shorten
-        </button>
+        <Button type="submit" variant="default" class="mx-2"> Shorten </Button>
       </form>
     </main>
 
