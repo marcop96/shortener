@@ -21,18 +21,42 @@ async function loginHandler(email: string, password: string) {
     console.log("Logged in:", data);
   }
 }
-async function onSubmit(event: Event) {
+async function newAccountHandler(email: string, password: string) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+  if (error) {
+    console.log("Error creating account:", error);
+  } else {
+    navigateTo("/");
+    console.log("Account created:", data);
+  }
+}
+async function onSubmit(event: Event, authMode: "login" | "create") {
   event.preventDefault();
-  console.log("onsubmit");
   const email = (event.target as HTMLFormElement).email.value;
   const password = (event.target as HTMLFormElement).password.value;
-  loginHandler(email, password);
+  if (authMode === "login") {
+    if (email && password) {
+      loginHandler(email, password);
+    }
+  }
+  if (
+    authMode === "create" &&
+    password === (event.target as HTMLFormElement).confirmPassword.value
+  ) {
+    newAccountHandler(email, password);
+  } else if (authMode === "create") {
+    alert("Passwords do not match");
+  } else {
+  }
 }
 </script>
 
 <template>
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
-    <form @submit="onSubmit">
+    <form @submit="onSubmit($event, props.authMode)">
       <div class="grid gap-2">
         <div class="grid gap-1">
           <Label class="sr-only" for="email"> Email </Label>
@@ -51,6 +75,16 @@ async function onSubmit(event: Event) {
           placeholder="Password"
           type="password"
           auto-complete="current-password"
+          minlength="6"
+        />
+        <Input
+          :class="
+            props.authMode === 'create' ? '' : 'opacity-0 pointer-events-none'
+          "
+          id="confirmPassword"
+          placeholder="Confirm Password"
+          type="password"
+          auto-complete="new-password"
         />
         <button variant="default" type="submit">
           {{ props.authMode === "create" ? "Create Account" : "Log in" }}
