@@ -4,6 +4,10 @@ import { cn } from "@/lib/utils";
 import Input from "@/components/ui/input/Input.vue";
 import Button from "@/components/ui/button/Button.vue";
 import Label from "@/components/ui/label/Label.vue";
+
+const props = defineProps<{
+  authMode: "login" | "create";
+}>();
 const supabase = useSupabaseClient();
 async function loginHandler(email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -48,7 +52,9 @@ async function onSubmit(event: Event) {
           type="password"
           auto-complete="current-password"
         />
-        <button variant="default" type="submit">Log in</button>
+        <button variant="default" type="submit">
+          {{ props.authMode === "create" ? "Create Account" : "Log in" }}
+        </button>
       </div>
     </form>
     <div class="relative">
