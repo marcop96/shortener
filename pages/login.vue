@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import UserAuthForm from "../components/UserAuthForm.vue";
 import { cn } from "@/lib/utils";
+
+definePageMeta({
+  title: "Shorten your URLs",
+  description: "Shorten your URLs with ease.",
+});
 </script>
 
 <template>

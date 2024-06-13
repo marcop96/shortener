@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import LinksDashboard from "~/components/LinksDashboard.vue";
 import CreateLink from "~/components/CreateLink.vue";
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted } from "vue";
+definePageMeta({
+  title: "Shorten your URLs",
+  description: "Shorten your URLs with ease.",
+});
 
 const client = useSupabaseClient();
 const user = useSupabaseUser();
