@@ -2,17 +2,27 @@
 import { ref } from "vue";
 import { cn } from "@/lib/utils";
 import Input from "@/components/ui/input/Input.vue";
-//import Button from "@/components/ui/button/Button.vue";
+import Button from "@/components/ui/button/Button.vue";
 import Label from "@/components/ui/label/Label.vue";
-
-const isLoading = ref(false);
+const supabase = useSupabaseClient();
+async function loginHandler(email: string, password: string) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) {
+    console.log("Error logging in:", error);
+  } else {
+    navigateTo("/");
+    console.log("Logged in:", data);
+  }
+}
 async function onSubmit(event: Event) {
   event.preventDefault();
-  isLoading.value = true;
-
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 3000);
+  console.log("onsubmit");
+  const email = (event.target as HTMLFormElement).email.value;
+  const password = (event.target as HTMLFormElement).password.value;
+  loginHandler(email, password);
 }
 </script>
 
@@ -29,13 +39,16 @@ async function onSubmit(event: Event) {
             auto-capitalize="none"
             auto-complete="email"
             auto-correct="off"
-            :disabled="isLoading"
           />
         </div>
-        <Button :disabled="isLoading">
-          <LucideSpinner v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-          Sign In with Email
-        </Button>
+        <Label class="sr-only" for="password"> Password </Label>
+        <Input
+          id="password"
+          placeholder="Password"
+          type="password"
+          auto-complete="current-password"
+        />
+        <button variant="default" type="submit">Log in</button>
       </div>
     </form>
     <div class="relative">
@@ -48,10 +61,6 @@ async function onSubmit(event: Event) {
         </span>
       </div>
     </div>
-    <Button variant="outline" type="button" :disabled="isLoading">
-      <LucideSpinner v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-      <GitHubLogo v-else class="mr-2 h-4 w-4" />
-      GitHub
-    </Button>
+    <Button variant="outline" @click="console.log('github')"> GitHub </Button>
   </div>
 </template>
