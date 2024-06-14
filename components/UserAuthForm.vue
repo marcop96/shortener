@@ -12,6 +12,10 @@ import Input from "@/components/ui/input/Input.vue";
 import Button from "@/components/ui/button/Button.vue";
 import Label from "@/components/ui/label/Label.vue";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/toast/use-toast";
+import { Toaster } from "@/components/ui/toast";
+
+const { toast } = useToast();
 
 const props = defineProps<{
   authMode: "login" | "create";
@@ -57,9 +61,18 @@ async function newAccountHandler(email: string, password: string) {
   });
   if (error) {
     console.log("Error creating account:", error);
+    toast({
+      title: "Error creating account",
+      description: error.message,
+      variant: "destructive",
+    });
   } else {
     navigateTo("/");
     console.log("Account created:", data);
+    toast({
+      title: "Account created ",
+      description: "Please check your email to confirm your sign",
+    });
   }
 }
 
@@ -79,6 +92,7 @@ async function submitForm(event: Event) {
 </script>
 
 <template>
+  <Toaster />
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
     <form @submit="submitForm">
       <div class="grid gap-2">
