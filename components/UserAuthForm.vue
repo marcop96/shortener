@@ -44,9 +44,13 @@ async function loginHandler(email: string, password: string) {
   });
   if (error) {
     console.log("Error logging in:", error);
+    toast({
+      title: error.message,
+      description: "Please try again",
+      variant: "destructive",
+    });
   } else {
     navigateTo("/");
-    console.log("Logged in:", data);
   }
 }
 
