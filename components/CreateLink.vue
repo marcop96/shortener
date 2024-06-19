@@ -4,9 +4,12 @@ import { v4 as uuidv4 } from "uuid";
 import type { Row } from "~/types";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import checkUser from "~/composables/checkUser";
+import generateQR from "~/composables/generateQR";
+
 const supabase = useSupabaseClient();
 const user_id = useSupabaseUser().value?.id;
-
+const defaultURL = "https://localhost:3000/";
 const long_url = ref("");
 const newUrl = ref<undefined | Row>(undefined);
 function isValidUrl(url: string): boolean {
@@ -18,23 +21,7 @@ function isValidUrl(url: string): boolean {
     return false;
   }
 }
-function checkUser() {
-  if (user_id === undefined || user_id === null) {
-    alert("User is not logged in.");
-    return;
-  }
-}
 
-function generateQRCode(url: string) {
-  console.log("qr");
-  fetch(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${url}`)
-    .then((response) => response.blob())
-    .then((blob) => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href;
-    });
-}
 const shortenLink = async (type: "link" | "qr") => {
   checkUser();
   if (!isValidUrl(long_url.value)) {
@@ -47,13 +34,17 @@ const shortenLink = async (type: "link" | "qr") => {
     creation_date: new Date().toISOString(),
     user_id: user_id,
     usage_count: 0,
+    qr_code: "",
   };
-
+  if (type === "qr") {
+    newUrl.value.qr_code = await generateQR(
+      defaultURL + newUrl.value.short_url
+    );
+    console.log(newUrl.value.qr_code);
+  }
   const { error } = await supabase
     .from("shortened_urls")
     .insert([newUrl.value]);
-
-  generateQRCode(long_url.value);
 
   if (error) {
     console.error("Error creating shortened URL:", error);
@@ -112,13 +103,7 @@ const shortenLink = async (type: "link" | "qr") => {
               <TableCell class="text-right">
                 {{ newUrl.usage_count }}
               </TableCell>
-              <TableCell>
-                <img
-                  :src="generateQRCode(newUrl.long_url)"
-                  alt="QR Code"
-                  class="w-8 h-8"
-                />
-              </TableCell>
+              <TableCell> <img :src="newUrl.qr_code" /></TableCell>
             </TableRow>
           </TableBody>
         </Table>
