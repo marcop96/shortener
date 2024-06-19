@@ -3,6 +3,7 @@ export interface Row {
   short_url: string;
   url_id: string;
   creation_date: string;
-  user_id: string;
+  user_id: string | undefined;
   usage_count: number;
+  qr_code: string;
 }
