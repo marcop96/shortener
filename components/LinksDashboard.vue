@@ -54,7 +54,6 @@ watch(
         <TableRow>
           <TableHead>Original URL</TableHead>
           <TableHead>Short URL</TableHead>
-          <TableHead>Creation Date</TableHead>
           <TableHead>Clicks</TableHead>
           <TableHead>QR Code</TableHead>
           <TableHead>Actions</TableHead>
@@ -63,24 +62,27 @@ watch(
       <TableBody>
         <TableRow v-for="url in updatedList">
           <TableCell class="font-medium w-2/4">
-            <NuxtLink :to="url.long_url" target="_blank">{{
-              url.long_url
-            }}</NuxtLink>
-          </TableCell>
-          <TableCell>
             <NuxtLink :to="url.short_url" target="_blank">{{
               url.short_url
-            }}</NuxtLink></TableCell
-          >
+            }}</NuxtLink>
+            <br />
+            <NuxtLink
+              :to="url.long_url"
+              target="_blank"
+              class="text-xs text-gray-400"
+              >{{ url.long_url }}</NuxtLink
+            >
+          </TableCell>
+
           <TableCell>{{
             new Date(url.creation_date).toLocaleDateString()
           }}</TableCell>
           <TableCell class="text-right">
             {{ url.usage_count }}
           </TableCell>
-          <TableCell>
+          <TableCell class="h-24">
             <p v-if="url.qr_code === ''">No</p>
-            <img v-else :src="url.qr_code" alt="QR Code" class="w-12 h-12" />
+            <img v-else :src="url.qr_code" alt="QR Code" />
           </TableCell>
           <TableCell>
             <button
