@@ -6,8 +6,8 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import checkUser from "~/composables/checkUser";
 import generateQR from "~/composables/generateQR";
-import { checkValidURL } from "~/composables/checkValidURL";
-
+import checkValidURL from "~/composables/checkValidURL";
+const runtimeConfig = useRuntimeConfig();
 const supabase = useSupabaseClient();
 const user_id = useSupabaseUser().value?.id;
 const long_url = ref("");
@@ -29,7 +29,7 @@ const shortenLink = async (type: "link" | "qr") => {
   };
   if (type === "qr") {
     newUrl.value.qr_code = await generateQR(
-      defaultURL + newUrl.value.short_url
+      runtimeConfig.public.baseURL + newUrl.value.short_url
     );
     console.log(newUrl.value.qr_code);
   }
