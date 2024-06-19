@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -15,7 +14,7 @@ function logoutHandler() {
   supabase.auth
     .signOut()
     .then(() => {
-      router.push("/");
+      navigateTo("/");
     })
     .finally(() => {
       location.reload();
@@ -23,7 +22,7 @@ function logoutHandler() {
 }
 
 function loginHandler() {
-  router.push("/login"); // Redirect to login page or handle login modal
+  navigateTo("/login"); // Redirect to login page or handle login modal
 }
 </script>
 <template>
@@ -70,18 +69,18 @@ function loginHandler() {
               </svg>
             </button>
           </div>
-          <div
-            class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
-          >
-            <div class="flex-shrink-0">
-              <img
-                class="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
-                alt="Workflow"
-              />
-            </div>
-            <div class="hidden sm:block sm:ml-6">
-              <div class="flex space-x-4">
+          <div class="flex-shrink-0 mx-12">
+            <img
+              class="h-8 w-auto"
+              src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
+              alt="Workflow"
+            />
+          </div>
+          <div class="hidden sm:block sm:ml-6">
+            <div
+              class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-center"
+            >
+              <div v-if="user" class="flex space-x-4">
                 <NuxtLink
                   to="/dashboard"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -118,7 +117,7 @@ function loginHandler() {
 
       <!-- Mobile menu, show/hide based on menu state. -->
       <div class="sm:hidden" v-if="menuOpen" id="mobile-menu">
-        <div class="px-2 pt-2 pb-3 space-y-1">
+        <div v-if="user" class="px-2 pt-2 pb-3 space-y-1">
           <NuxtLink
             to="/dashboard"
             class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
