@@ -48,7 +48,5 @@ watch(user, (newUser) => {
 </script>
 
 <template>
-  <div>test</div>
-
-  <LinksDashboard :shortened_urls="shortened_urls" />
+  <LinksDashboard :shortened_urls="shortened_urls" class="mt-12" />
 </template>
