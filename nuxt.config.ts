@@ -11,5 +11,6 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "radix-vue/nuxt",
+    "@nuxtjs/device",
   ],
 });

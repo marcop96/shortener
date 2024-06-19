@@ -63,6 +63,9 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3(vue@3.4.29(typescript@5.4.5))
     devDependencies:
+      '@nuxtjs/device':
+        specifier: ^3.1.1
+        version: 3.1.1(magicast@0.3.4)(rollup@4.18.0)
       '@nuxtjs/tailwindcss':
         specifier: ^6.12.0
         version: 6.12.0(magicast@0.3.4)(rollup@4.18.0)
@@ -748,6 +751,9 @@ packages:
     peerDependencies:
       '@supabase/auth-ui-shared': ^0.1.8
       '@supabase/supabase-js': ^2.42.7
+
+  '@nuxtjs/device@3.1.1':
+    resolution: {integrity: sha512-wHTziEevt1hdgePQwPhEedWW3COalhP0YGVB+sGLqSrKujX8vdz7lcBFB01KIftpaP8kY5H8pssibNaJbxGcYw==}
 
   '@nuxtjs/supabase@1.2.2':
     resolution: {integrity: sha512-DNEuB7YXaOhV118bNway6SUpQLGq0zsK1kzddyETrwx3dHz+7etEw+QKU7iVs/GZog9Q7xkUQtGhcEQYaTZ71w==}
@@ -5218,6 +5224,15 @@ snapshots:
     dependencies:
       '@supabase/auth-ui-shared': 0.1.8(@supabase/supabase-js@2.43.4)
       '@supabase/supabase-js': 2.43.4
+
+  '@nuxtjs/device@3.1.1(magicast@0.3.4)(rollup@4.18.0)':
+    dependencies:
+      '@nuxt/kit': 3.12.2(magicast@0.3.4)(rollup@4.18.0)
+      defu: 6.1.4
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
 
   '@nuxtjs/supabase@1.2.2(magicast@0.3.4)(rollup@4.18.0)':
     dependencies:
