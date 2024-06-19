@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import type { Row } from "~/types";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-const client = useSupabaseClient();
+
+const { isMobile } = useDevice();
+const isLoading = ref(true);
 const props = defineProps<{
   shortened_urls: Row[];
 }>();
+const client = useSupabaseClient();
 const updatedList = ref<Row[]>(props.shortened_urls);
 async function deleteRow(row: Row) {
   try {
@@ -24,27 +18,28 @@ async function deleteRow(row: Row) {
       console.error(error.message);
     } else {
       // Update the list immediately
+      isLoading.value = false;
       updatedList.value = updatedList.value.filter(
         (item) => item.url_id !== row.url_id
       );
-      console.log("Deleted row:", row);
     }
   } catch (err) {
     console.error("Unexpected error:", err);
   }
 }
-
 watch(
   () => props.shortened_urls,
   (newUrls) => {
     updatedList.value = newUrls;
+    isLoading.value = false;
   }
 );
 </script>
 
 <template>
   <div class="flex items-center w-full">
-    <Table class="w-1/2 justify-center mx-auto">
+    <div v-if="isLoading" class="mx-auto">Loading...</div>
+    <Table v-else class="w-1/2 justify-center mx-auto">
       <TableCaption v-if="updatedList.length > 0"
         >List of your Links</TableCaption
       >
@@ -53,9 +48,8 @@ watch(
       <TableHeader>
         <TableRow>
           <TableHead>Original URL</TableHead>
-          <TableHead>Short URL</TableHead>
-          <TableHead>Clicks</TableHead>
           <TableHead>QR Code</TableHead>
+          <TableHead v-if="!isMobile">Clicks</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -74,15 +68,12 @@ watch(
             >
           </TableCell>
 
-          <TableCell>{{
-            new Date(url.creation_date).toLocaleDateString()
-          }}</TableCell>
-          <TableCell class="text-right">
-            {{ url.usage_count }}
-          </TableCell>
           <TableCell class="h-24">
             <p v-if="url.qr_code === ''">No</p>
             <img v-else :src="url.qr_code" alt="QR Code" />
+          </TableCell>
+          <TableCell v-if="!isMobile" class="text-right">
+            {{ url.usage_count }}
           </TableCell>
           <TableCell>
             <button
