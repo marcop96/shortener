@@ -3,7 +3,5 @@ import CreateLink from "~/components/CreateLink.vue";
 </script>
 
 <template>
-  <div>test</div>
-
-  <CreateLink />
+  <CreateLink class="mt-12" />
 </template>
