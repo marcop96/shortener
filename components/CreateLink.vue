@@ -6,25 +6,16 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import checkUser from "~/composables/checkUser";
 import generateQR from "~/composables/generateQR";
+import { checkValidURL } from "~/composables/checkValidURL";
 
 const supabase = useSupabaseClient();
 const user_id = useSupabaseUser().value?.id;
-const defaultURL = "https://localhost:3000/";
 const long_url = ref("");
 const newUrl = ref<undefined | Row>(undefined);
-function isValidUrl(url: string): boolean {
-  try {
-    new URL(url);
-    return true;
-  } catch (e) {
-    alert("Invalid URL");
-    return false;
-  }
-}
 
 const shortenLink = async (type: "link" | "qr") => {
   checkUser();
-  if (!isValidUrl(long_url.value)) {
+  if (!checkValidURL(long_url.value)) {
     return;
   }
   newUrl.value = {
@@ -80,14 +71,11 @@ const shortenLink = async (type: "link" | "qr") => {
             <TableRow>
               <TableHead>Original URL</TableHead>
               <TableHead>Short URL</TableHead>
-              <TableHead>Creation Date</TableHead>
-              <TableHead>Clicks</TableHead>
-              <TableHead>QR</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell class="font-medium w-2/4">
+              <TableCell class="font-medium w-4/5">
                 <NuxtLink :to="newUrl.long_url" target="_blank">{{
                   newUrl.long_url
                 }}</NuxtLink>
@@ -97,17 +85,13 @@ const shortenLink = async (type: "link" | "qr") => {
                   newUrl.short_url
                 }}</NuxtLink>
               </TableCell>
-              <TableCell>{{
-                new Date(newUrl.creation_date).toLocaleDateString()
-              }}</TableCell>
-              <TableCell class="text-right">
-                {{ newUrl.usage_count }}
-              </TableCell>
-              <TableCell> <img :src="newUrl.qr_code" /></TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </div>
+    </section>
+    <section v-if="newUrl" class="flex justify-center items-center">
+      <img :src="newUrl.qr_code" />
     </section>
   </div>
 </template>
