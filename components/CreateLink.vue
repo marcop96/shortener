@@ -48,17 +48,17 @@ const shortenLink = async (type: "link" | "qr") => {
 <template>
   <div class="relative">
     <main class="flex justify-center">
-      <form @submit.prevent="" class="mx-auto">
+      <form class="mx-auto" @submit.prevent="">
         <Input
-          type="text"
           v-model="long_url"
+          type="text"
           placeholder="Enter URL"
           class="m-2"
         />
-        <Button @click="shortenLink('link')" type="submit" class="mx-2">
+        <Button type="submit" class="mx-2" @click="shortenLink('link')">
           Shorten
         </Button>
-        <Button @click="shortenLink('qr')" type="submit" class="mx-2"
+        <Button type="submit" class="mx-2" @click="shortenLink('qr')"
           >Shorten + QR</Button
         >
       </form>
@@ -91,7 +91,7 @@ const shortenLink = async (type: "link" | "qr") => {
       </div>
     </section>
     <section v-if="newUrl" class="flex justify-center items-center">
-      <img :src="newUrl.qr_code" />
+      <img :src="newUrl.qr_code" >
     </section>
   </div>
 </template>

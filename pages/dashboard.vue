@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import LinksDashboard from "~/components/LinksDashboard.vue";
-import CreateLink from "~/components/CreateLink.vue";
 import { ref, watch, onMounted } from "vue";
 definePageMeta({
   title: "Shorten your URLs",
@@ -9,9 +8,7 @@ definePageMeta({
 
 const client = useSupabaseClient();
 const user = useSupabaseUser();
-const activeSite = ref<"table" | "create">("create");
 const shortened_urls = ref([]);
-
 async function getShortenedUrls() {
   if (user.value) {
     const { data, error } = await client
@@ -27,11 +24,6 @@ async function getShortenedUrls() {
   } else {
     console.error("User is not logged in.");
   }
-}
-
-function swapTabs(tab: "table" | "create") {
-  activeSite.value = tab;
-  getShortenedUrls();
 }
 
 onMounted(() => {

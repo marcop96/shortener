@@ -59,7 +59,7 @@ watch(
             <NuxtLink :to="url.short_url" target="_blank">{{
               url.short_url
             }}</NuxtLink>
-            <br />
+            <br >
             <NuxtLink
               :to="url.long_url"
               target="_blank"
@@ -70,15 +70,15 @@ watch(
 
           <TableCell class="h-24">
             <p v-if="url.qr_code === ''">No</p>
-            <img v-else :src="url.qr_code" alt="QR Code" />
+            <img v-else :src="url.qr_code" alt="QR Code" >
           </TableCell>
           <TableCell v-if="!isMobile" class="text-right">
             {{ url.usage_count }}
           </TableCell>
           <TableCell>
             <button
-              @click="deleteRow(url)"
               class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              @click="deleteRow(url)"
             >
               Delete
             </button></TableCell

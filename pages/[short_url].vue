@@ -44,7 +44,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="lds-ripple"></div>
+  <div class="lds-ripple"/>
 </template>
 
 <style scoped>

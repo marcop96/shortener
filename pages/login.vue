@@ -32,9 +32,9 @@ function toggleAuthMode() {
       <div class="w-full max-w-sm black p-6 rounded-lg shadow-lg">
         <div class="flex flex-col space-y-4 items-center justify-center">
           <Button
-            @click="toggleAuthMode"
             variant="outline"
             class="hover:cursor-pointer"
+            @click="toggleAuthMode"
           >
             {{
               authMode === "create"
@@ -57,7 +57,7 @@ function toggleAuthMode() {
             }}
           </p>
         </div>
-        <UserAuthForm :authMode="authMode" />
+        <UserAuthForm :auth-mode="authMode" />
         <p class="px-8 text-center text-sm text-muted-foreground mt-4">
           By clicking continue, you agree to our
           <a

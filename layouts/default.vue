@@ -33,8 +33,8 @@ function loginHandler() {
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <!-- Mobile menu button -->
             <button
-              @click="toggleMenu"
               class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              @click="toggleMenu"
             >
               <span class="sr-only">Open main menu</span>
               <svg
@@ -74,7 +74,7 @@ function loginHandler() {
               class="h-8 w-auto"
               src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
               alt="Workflow"
-            />
+            >
           </div>
           <div class="hidden sm:block sm:ml-6">
             <div
@@ -99,15 +99,15 @@ function loginHandler() {
           >
             <button
               v-if="user"
-              @click="logoutHandler"
               class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              @click="logoutHandler"
             >
               <span>Log out</span>
             </button>
             <button
               v-else
-              @click="loginHandler"
               class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              @click="loginHandler"
             >
               <span>Log in</span>
             </button>
@@ -116,7 +116,7 @@ function loginHandler() {
       </div>
 
       <!-- Mobile menu, show/hide based on menu state. -->
-      <div class="sm:hidden" v-if="menuOpen" id="mobile-menu">
+      <div v-if="menuOpen" id="mobile-menu" class="sm:hidden">
         <div v-if="user" class="px-2 pt-2 pb-3 space-y-1">
           <NuxtLink
             to="/dashboard"
@@ -132,7 +132,7 @@ function loginHandler() {
       </div>
     </nav>
     <main>
-      <slot></slot>
+      <slot/>
     </main>
   </div>
 </template>

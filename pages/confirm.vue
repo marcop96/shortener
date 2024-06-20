@@ -2,9 +2,10 @@
 const user = useSupabaseUser()
 
 watch(user, () => {
-  if (user.value) {
+  if (user.value)   
+  {
       // Redirect to protected page
-      return navigateTo('/')
+                return   navigateTo('/')
   }
 }, { immediate: true })
 </script>
