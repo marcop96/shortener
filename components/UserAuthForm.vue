@@ -123,7 +123,7 @@ async function submitForm(event: Event) {
             {{ v$.confirmPassword.$errors[0]?.$message }}
           </p>
         </div>
-        <Button variant="default" type="submit">
+        <Button variant="default" class="hover:cursor-pointer" @click="submitForm">
           {{ props.authMode === "create" ? "Create Account" : "Log in" }}
         </Button>
       </div>
