@@ -30,21 +30,15 @@ function toggleAuthMode() {
   <div class="container flex flex-col items-center justify-center h-screen">
     <div class="lg:p-8 mx-auto">
       <div class="w-full max-w-sm black p-6 rounded-lg shadow-lg">
-        <div class="flex flex-col space-y-4 items-center justify-center">
-          <Button variant="outline" class="hover:cursor-pointer" @click="toggleAuthMode">
+        <div class="flex flex-col space-y-4 items-center justify-center bg-violet-200">
+          <Button variant="outline" class="hover:cursor-pointer p-2 mt-4" @click="toggleAuthMode">
             {{
               authMode === "create"
                 ? CREATE_ACCOUNT_TEXT.switch
                 : LOGIN_TEXT.switch
             }}
           </Button>
-          <h1 class="text-2xl font-semibold tracking-tight">
-            {{
-              authMode === "login"
-                ? LOGIN_TEXT.title
-                : CREATE_ACCOUNT_TEXT.title
-            }}
-          </h1>
+
           <p class="text-sm text-muted-foreground">
             {{
               authMode === "login"
@@ -53,7 +47,7 @@ function toggleAuthMode() {
             }}
           </p>
         </div>
-        <UserAuthForm :auth-mode="authMode" />
+        <UserAuthForm :auth-mode="authMode" @succesful-create-account="toggleAuthMode" />
         <p class="px-8 text-center text-sm text-muted-foreground mt-4">
           By clicking continue, you agree to our
           <a href="/terms" class="underline underline-offset-4 hover:text-primary">

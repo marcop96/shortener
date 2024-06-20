@@ -5,8 +5,7 @@ import {
   required,
   email,
   minLength,
-  sameAs,
-  helpers,
+
 } from "@vuelidate/validators";
 import Input from "@/components/ui/input/Input.vue";
 import Button from "@/components/ui/button/Button.vue";
@@ -20,6 +19,7 @@ const { toast } = useToast();
 const props = defineProps<{
   authMode: "login" | "create";
 }>();
+const emit = defineEmits(['succesfulCreateAccount']);
 
 const formData = ref({
   email: "",
@@ -38,7 +38,7 @@ const v$ = useVuelidate(validations, formData);
 const supabase = useSupabaseClient();
 
 async function loginHandler(email: string, password: string) {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -72,6 +72,7 @@ async function newAccountHandler(email: string, password: string) {
     });
   } else {
     navigateTo("/");
+    emit('succesfulCreateAccount')
     console.log("Account created:", data);
     toast({
       title: "Account created ",
@@ -102,47 +103,29 @@ async function submitForm(event: Event) {
       <div class="grid gap-2">
         <div class="grid gap-1">
           <Label for="email">Email</Label>
-          <Input
-            id="email"
-            v-model="formData.email"
-            placeholder="name@example.com"
-            type="email"
-            auto-capitalize="none"
-            auto-complete="email"
-            auto-correct="off"
-          />
+          <Input id="email" v-model="formData.email" placeholder="name@example.com" type="email" auto-capitalize="none"
+            auto-complete="email" auto-correct="off" />
           <p v-if="v$.email.$error" class="text-red-500 text-xs mt-1">
             {{ v$.email.$errors[0]?.$message }}
           </p>
         </div>
         <Label for="password">Password</Label>
-        <Input
-          id="password"
-          v-model="formData.password"
-          placeholder="Password"
-          type="password"
-          auto-complete="current-password"
-          minlength="6"
-        />
+        <Input id="password" v-model="formData.password" placeholder="Password" type="password"
+          auto-complete="current-password" minlength="6" />
         <p v-if="v$.password.$error" class="text-red-500 text-xs mt-1">
           {{ v$.password.$errors[0]?.$message }}
         </p>
         <div :class="props.authMode === 'create' ? '' : 'hidden'">
           <Label for="confirmPassword">Confirm Password</Label>
-          <Input
-            id="confirmPassword"
-            v-model="formData.confirmPassword"
-            placeholder="Confirm Password"
-            type="password"
-            auto-complete="new-password"
-          />
+          <Input id="confirmPassword" v-model="formData.confirmPassword" placeholder="Confirm Password" type="password"
+            auto-complete="new-password" />
           <p v-if="v$.confirmPassword.$error" class="text-red-500 text-xs mt-1">
             {{ v$.confirmPassword.$errors[0]?.$message }}
           </p>
         </div>
-        <button variant="default" type="submit">
+        <Button variant="default" type="submit">
           {{ props.authMode === "create" ? "Create Account" : "Log in" }}
-        </button>
+        </Button>
       </div>
     </form>
     <div class="relative">
