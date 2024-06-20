@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { Row } from "~/types";
+import type { UrlEntity } from "~/types";
 
 const { isMobile } = useDevice();
 const isLoading = ref(true);
 const props = defineProps<{
-  shortened_urls: Row[];
+  shortened_urls: UrlEntity[];
 }>();
 const client = useSupabaseClient();
-const updatedList = ref<Row[]>(props.shortened_urls);
-async function deleteRow(row: Row) {
+const updatedList = ref<UrlEntity[]>(props.shortened_urls);
+async function deleteRow(row: UrlEntity) {
   try {
-    const { data, error } = await client
+    const { error } = await client
       .from("shortened_urls")
       .delete()
       .eq("url_id", row.url_id);
@@ -40,9 +40,7 @@ watch(
   <div class="flex items-center w-full">
     <div v-if="isLoading" class="mx-auto">Loading...</div>
     <Table v-else class="w-1/2 justify-center mx-auto">
-      <TableCaption v-if="updatedList.length > 0"
-        >List of your Links</TableCaption
-      >
+      <TableCaption v-if="updatedList.length > 0">List of your Links</TableCaption>
       <TableCaption v-else>Create a short URL to see them here</TableCaption>
 
       <TableHeader>
@@ -54,35 +52,27 @@ watch(
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="url in updatedList">
+        <TableRow v-for="url in updatedList" :key="url.short_url">
           <TableCell class="font-medium w-2/4">
             <NuxtLink :to="url.short_url" target="_blank">{{
               url.short_url
             }}</NuxtLink>
-            <br >
-            <NuxtLink
-              :to="url.long_url"
-              target="_blank"
-              class="text-xs text-gray-400"
-              >{{ url.long_url }}</NuxtLink
-            >
+            <br>
+            <NuxtLink :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{ url.long_url }}</NuxtLink>
           </TableCell>
 
           <TableCell class="h-24">
             <p v-if="url.qr_code === ''">No</p>
-            <img v-else :src="url.qr_code" alt="QR Code" >
+            <img v-else :src="url.qr_code" alt="QR Code">
           </TableCell>
           <TableCell v-if="!isMobile" class="text-right">
             {{ url.usage_count }}
           </TableCell>
           <TableCell>
-            <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              @click="deleteRow(url)"
-            >
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteRow(url)">
               Delete
-            </button></TableCell
-          >
+            </button>
+          </TableCell>
         </TableRow>
       </TableBody>
     </Table>

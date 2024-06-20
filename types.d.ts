@@ -1,4 +1,4 @@
-export interface Row {
+export interface UrlEntity {
   long_url: string;
   short_url: string;
   url_id: string;

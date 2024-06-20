@@ -5,10 +5,9 @@ definePageMeta({
   title: "Shorten your URLs",
   description: "Shorten your URLs with ease.",
 });
-
 const client = useSupabaseClient();
 const user = useSupabaseUser();
-const shortened_urls = ref([]);
+const shortenedUrls = ref([]);
 async function getShortenedUrls() {
   if (user.value) {
     const { data, error } = await client
@@ -19,7 +18,7 @@ async function getShortenedUrls() {
     if (error) {
       console.error("Error fetching shortened URLs:", error);
     } else {
-      shortened_urls.value = data;
+      shortenedUrls.value = data;
     }
   } else {
     console.error("User is not logged in.");
@@ -34,11 +33,11 @@ watch(user, (newUser) => {
   if (newUser) {
     getShortenedUrls();
   } else {
-    shortened_urls.value = [];
+    shortenedUrls.value = [];
   }
 });
 </script>
 
 <template>
-  <LinksDashboard :shortened_urls="shortened_urls" class="mt-12" />
+  <LinksDashboard :shortened_urls="shortenedUrls" class="mt-12" />
 </template>

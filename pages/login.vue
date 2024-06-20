@@ -23,7 +23,7 @@ function toggleAuthMode() {
   authMode.value === "create"
     ? (authMode.value = "login")
     : (authMode.value = "create");
-}
+} 
 </script>
 
 <template>
@@ -31,11 +31,7 @@ function toggleAuthMode() {
     <div class="lg:p-8 mx-auto">
       <div class="w-full max-w-sm black p-6 rounded-lg shadow-lg">
         <div class="flex flex-col space-y-4 items-center justify-center">
-          <Button
-            variant="outline"
-            class="hover:cursor-pointer"
-            @click="toggleAuthMode"
-          >
+          <Button variant="outline" class="hover:cursor-pointer" @click="toggleAuthMode">
             {{
               authMode === "create"
                 ? CREATE_ACCOUNT_TEXT.switch
@@ -60,19 +56,12 @@ function toggleAuthMode() {
         <UserAuthForm :auth-mode="authMode" />
         <p class="px-8 text-center text-sm text-muted-foreground mt-4">
           By clicking continue, you agree to our
-          <a
-            href="/terms"
-            class="underline underline-offset-4 hover:text-primary"
-          >
+          <a href="/terms" class="underline underline-offset-4 hover:text-primary">
             Terms of Service
           </a>
           and
-          <a
-            href="/privacy"
-            class="underline underline-offset-4 hover:text-primary"
-          >
-            Privacy Policy </a
-          >.
+          <a href="/privacy" class="underline underline-offset-4 hover:text-primary">
+            Privacy Policy </a>.
         </p>
       </div>
     </div>
