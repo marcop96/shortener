@@ -12,5 +12,6 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "radix-vue/nuxt",
     "@nuxtjs/device",
+    "@nuxt/eslint"
   ],
 });

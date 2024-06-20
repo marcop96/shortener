@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/eslint": "^0.3.13",
     "@nuxtbase/auth-ui-vue": "^0.3.7",
     "@nuxtjs/supabase": "^1.2.2",
     "@radix-icons/vue": "^1.0.0",
