@@ -4,7 +4,7 @@ import { ref } from "vue";
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const menuOpen = ref(false);
-
+const route = useRoute()
 function toggleMenu() {
   menuOpen.value = !menuOpen.value;
 }
@@ -48,10 +48,12 @@ function logoutHandler() {
             <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-center">
               <div v-if="user" class="flex space-x-4">
                 <NuxtLink to="/dashboard"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  :class="route.path === '/dashboard' ? 'bg-gray-900 text-white' : ''">
                   Dashboard</NuxtLink>
                 <NuxtLink to="/create"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  :class="route.path === '/create' ? 'bg-gray-900 text-white' : ''">
                   Shorten</NuxtLink>
               </div>
             </div>
