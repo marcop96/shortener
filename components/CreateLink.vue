@@ -99,6 +99,9 @@ const copyToClipboard = (text: string) => {
           class="w-fit text-center bg-gray-100 p-2 rounded-lg" />
         <Button class="m-2 hover:cursor-pointer" @click="copyToClipboard(newUrl!.short_url)">Copy</Button>
       </div>
+      <div class="flex flex-row justify-center items-center">
+        <img :src="newUrl.qr_code">
+      </div>
     </section>
   </div>
 </template>
