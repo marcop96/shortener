@@ -102,6 +102,7 @@ async function signInWithGithub() {
       redirectTo: `https://jtetlecryyqimsdcvnqv.supabase.co/auth/v1/callback`,
     },
   })
+  navigateTo("/");
 }
 
 </script>
@@ -114,21 +115,24 @@ async function signInWithGithub() {
         <div class="grid gap-1">
           <Label for="email">Email</Label>
           <Input id="email" v-model="formData.email" placeholder="name@example.com" type="email" auto-capitalize="none"
-            auto-complete="email" auto-correct="off" />
+            auto-complete="email" auto-correct="off"
+            :class="v$.email.$error ? 'outline outline-1 outline-red-500' : ''" />
           <p v-if="v$.email.$error" class="text-red-500 text-xs mt-1">
             {{ v$.email.$errors[0]?.$message }}
           </p>
         </div>
         <Label for="password">Password</Label>
         <Input id="password" v-model="formData.password" placeholder="Password" type="password"
-          auto-complete="current-password" minlength="6" />
+          auto-complete="current-password" minlength="6"
+          :class="v$.password.$error ? 'outline outline-1 outline-red-500' : ''" />
         <p v-if="v$.password.$error" class="text-red-500 text-xs mt-1">
           {{ v$.password.$errors[0]?.$message }}
         </p>
         <div :class="props.authMode === 'create' ? '' : 'hidden'">
           <Label for="confirmPassword">Confirm Password</Label>
           <Input id="confirmPassword" v-model="formData.confirmPassword" placeholder="Confirm Password" type="password"
-            auto-complete="new-password" />
+            auto-complete="new-password"
+            :class="v$.confirmPassword.$error ? 'outline outline-1 outline-red-500' : ''" />
           <p v-if="v$.confirmPassword.$error" class="text-red-500 text-xs mt-1">
             {{ v$.confirmPassword.$errors[0]?.$message }}
           </p>
