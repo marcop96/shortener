@@ -109,7 +109,7 @@ async function signInWithGithub() {
 <template>
   <Toaster />
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
-    <form @submit="submitForm">
+    <form @submit.prevent="submitForm">
       <div class="grid gap-2">
         <div class="grid gap-1">
           <Label for="email">Email</Label>
