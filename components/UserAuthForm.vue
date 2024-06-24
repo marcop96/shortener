@@ -94,6 +94,16 @@ async function submitForm(event: Event) {
     await newAccountHandler(email, password);
   }
 }
+
+async function signInWithGithub() {
+  await supabase.auth.signInWithOAuth({
+    provider: 'github',
+    options: {
+      redirectTo: `https://jtetlecryyqimsdcvnqv.supabase.co/auth/v1/callback`,
+    },
+  })
+}
+
 </script>
 
 <template>
@@ -138,6 +148,6 @@ async function submitForm(event: Event) {
         </span>
       </div>
     </div>
-    <Button variant="outline" @click="console.log('github')">GitHub</Button>
+    <Button variant="outline" @click='signInWithGithub'>GitHub</Button>
   </div>
 </template>
