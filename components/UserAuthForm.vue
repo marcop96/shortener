@@ -43,7 +43,7 @@ async function loginHandler(email: string, password: string) {
     password,
   });
   if (error) {
-    console.log("Error logging in:", error);
+    console.error("Error logging in:", error);
     toast({
       title: error.message,
       description: "Please try again",
@@ -64,7 +64,7 @@ async function newAccountHandler(email: string, password: string) {
     password,
   });
   if (error) {
-    console.log("Error creating account:", error);
+    console.error("Error creating account:", error);
     toast({
       title: "Error creating account",
       description: error.message,
@@ -95,15 +95,15 @@ async function submitForm(event: Event) {
   }
 }
 
-async function signInWithGithub() {
-  await supabase.auth.signInWithOAuth({
-    provider: 'github',
-    options: {
-      redirectTo: `https://jtetlecryyqimsdcvnqv.supabase.co/auth/v1/callback`,
-    },
-  })
-  navigateTo("/");
-}
+// async function signInWithGithub() {
+//   await supabase.auth.signInWithOAuth({
+//     provider: 'github',
+//     options: {
+//       redirectTo: `https://jtetlecryyqimsdcvnqv.supabase.co/auth/v1/callback`,
+//     },
+//   })
+//   navigateTo("/");
+// }
 
 </script>
 
@@ -146,12 +146,8 @@ async function signInWithGithub() {
       <div class="absolute inset-0 flex items-center">
         <span class="w-full border-t" />
       </div>
-      <div class="relative flex justify-center text-xs uppercase">
-        <span class="bg-background px-2 text-muted-foreground">
-          Or continue with
-        </span>
-      </div>
+
     </div>
-    <Button variant="outline" @click='signInWithGithub'>GitHub</Button>
+    <!-- <Button variant="outline" @click='signInWithGithub'>GitHub</Button> -->
   </div>
 </template>
