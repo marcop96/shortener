@@ -6,4 +6,5 @@ export interface UrlEntity {
   user_id: string | undefined;
   usage_count: number;
   qr_code: string;
+  editable: boolean;
 }

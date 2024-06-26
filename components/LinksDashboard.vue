@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import type { UrlEntity } from "~/types";
-
+import { useToast } from "@/components/ui/toast/use-toast";
+import { Toaster } from "@/components/ui/toast";
+import validateURL from "~/composables/ValidateURL";
+const { toast } = useToast();
 const { isMobile } = useDevice();
 const isLoading = ref(true);
 const props = defineProps<{
   shortened_urls: UrlEntity[];
 }>();
 const client = useSupabaseClient();
-const updatedList = ref<UrlEntity[]>(props.shortened_urls);
+const updatedList = ref<UrlEntity[]>(props.shortened_urls.map(url => ({ ...url, editable: false })));
+
+
 async function deleteRow(row: UrlEntity) {
   try {
     const { error } = await client
@@ -27,6 +32,36 @@ async function deleteRow(row: UrlEntity) {
     console.error("Unexpected error:", err);
   }
 }
+
+function selectEdit(row: UrlEntity) {
+  row.editable = true;
+}
+async function confirmEdit(row: UrlEntity) {
+
+  if (!validateURL(row.long_url)) {
+
+    return;
+  }
+  const { error } = await client
+    .from("shortened_urls")
+    .update({
+      long_url: row.long_url
+    })
+    .eq("url_id", row.url_id);
+
+  if (error) {
+    console.error("Error updating row:", error.message);
+  } else {
+
+    toast({
+      title: 'Success',
+      description: "Your URL has been updated",
+      variant: "default",
+    });
+    row.editable = false;
+
+  }
+}
 watch(
   () => props.shortened_urls,
   (newUrls) => {
@@ -38,6 +73,7 @@ watch(
 
 <template>
   <div class="flex items-center w-full">
+    <Toaster />
     <div v-if="isLoading" class="mx-auto">Loading...</div>
     <Table v-else class="w-1/2 justify-center mx-auto">
       <TableCaption v-if="updatedList.length > 0">List of your Links</TableCaption>
@@ -54,11 +90,13 @@ watch(
       <TableBody>
         <TableRow v-for="url in updatedList" :key="url.short_url">
           <TableCell class="font-medium w-2/4">
-            <NuxtLink :to="url.short_url" target="_blank">{{
+            <NuxtLink v-if='!url.editable' :to="url.short_url" target="_blank">{{
               url.short_url
             }}</NuxtLink>
             <br>
-            <NuxtLink :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{ url.long_url }}</NuxtLink>
+            <Input v-if='url.editable' v-model="url.long_url" />
+            <NuxtLink v-if='!url.editable' :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{
+              url.long_url }}</NuxtLink>
           </TableCell>
 
           <TableCell class="h-24">
@@ -69,9 +107,14 @@ watch(
             {{ url.usage_count }}
           </TableCell>
           <TableCell>
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteRow(url)">
+            <Button v-if='!url.editable' variant="secondary" class="hover:cursor-pointer" @click='selectEdit(url)'>
+              edit</Button>
+            <Button v-else class="hover:cursor-pointer" variant="default" @click="confirmEdit(url)">confirm</Button>
+
+            <Button v-if="!url.editable" class="hover:cursor-pointer" variant="destructive" @click="deleteRow(url)">
               Delete
-            </button>
+            </Button>
+
           </TableCell>
         </TableRow>
       </TableBody>
