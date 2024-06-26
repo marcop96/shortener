@@ -2,7 +2,7 @@
 import type { UrlEntity } from "~/types";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { Toaster } from "@/components/ui/toast";
-
+import validateURL from "~/composables/ValidateURL";
 const { toast } = useToast();
 const { isMobile } = useDevice();
 const isLoading = ref(true);
@@ -37,6 +37,11 @@ function selectEdit(row: UrlEntity) {
   row.editable = true;
 }
 async function confirmEdit(row: UrlEntity) {
+
+  if (!validateURL(row.long_url)) {
+
+    return;
+  }
   const { error } = await client
     .from("shortened_urls")
     .update({
@@ -102,16 +107,13 @@ watch(
             {{ url.usage_count }}
           </TableCell>
           <TableCell>
-            <button v-if='!url.editable' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              @click='selectEdit(url)'>
-              edit</button>
-            <button v-else class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              @click="confirmEdit(url)">confirm</button>
+            <Button v-if='!url.editable' variant="secondary" class="hover:cursor-pointer" @click='selectEdit(url)'>
+              edit</Button>
+            <Button v-else class="hover:cursor-pointer" variant="default" @click="confirmEdit(url)">confirm</Button>
 
-            <button v-if="!url.editable" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              @click="deleteRow(url)">
+            <Button v-if="!url.editable" class="hover:cursor-pointer" variant="destructive" @click="deleteRow(url)">
               Delete
-            </button>
+            </Button>
 
           </TableCell>
         </TableRow>
