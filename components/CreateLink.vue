@@ -6,7 +6,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import checkUser from "~/composables/checkUser";
 import generateQR from "~/composables/generateQR";
-import validateURL from "~/composables/checkValidURL";
+import validateURL from "~/composables/ValidateURL";
 const runtimeConfig = useRuntimeConfig();
 const supabase = useSupabaseClient();
 const user_id = useSupabaseUser().value?.id;

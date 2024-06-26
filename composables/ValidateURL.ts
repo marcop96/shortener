@@ -1,4 +1,4 @@
-export default function checkValidURL(url: string): boolean {
+export default function validateURL(url: string): boolean {
   try {
     new URL(url);
     return true;
