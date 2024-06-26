@@ -10,8 +10,8 @@ const props = defineProps<{
   shortened_urls: UrlEntity[];
 }>();
 const client = useSupabaseClient();
-const updatedList = ref<UrlEntity[]>(props.shortened_urls);
-const isEditing = ref(false);
+const updatedList = ref<UrlEntity[]>(props.shortened_urls.map(url => ({ ...url, editable: false })));
+
 
 async function deleteRow(row: UrlEntity) {
   try {
@@ -34,17 +34,15 @@ async function deleteRow(row: UrlEntity) {
 }
 
 function selectEdit(row: UrlEntity) {
-  isEditing.value = true
-
-
+  row.editable = true;
 }
-async function confirmEdit() {
+async function confirmEdit(row: UrlEntity) {
   const { error } = await client
     .from("shortened_urls")
     .update({
-      long_url: updatedList.value[0].long_url
+      long_url: row.long_url
     })
-    .eq("url_id", updatedList.value[0].url_id);
+    .eq("url_id", row.url_id);
 
   if (error) {
     console.error("Error updating row:", error.message);
@@ -53,9 +51,10 @@ async function confirmEdit() {
     toast({
       title: 'Success',
       description: "Your URL has been updated",
-      // variant: "default",
+      variant: "default",
     });
-    isEditing.value = false;
+    row.editable = false;
+
   }
 }
 watch(
@@ -86,12 +85,12 @@ watch(
       <TableBody>
         <TableRow v-for="url in updatedList" :key="url.short_url">
           <TableCell class="font-medium w-2/4">
-            <NuxtLink v-if='!isEditing' :to="url.short_url" target="_blank">{{
+            <NuxtLink v-if='!url.editable' :to="url.short_url" target="_blank">{{
               url.short_url
-              }}</NuxtLink>
+            }}</NuxtLink>
             <br>
-            <Input v-if='isEditing' v-model="url.long_url" />
-            <NuxtLink v-if='!isEditing' :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{
+            <Input v-if='url.editable' v-model="url.long_url" />
+            <NuxtLink v-if='!url.editable' :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{
               url.long_url }}</NuxtLink>
           </TableCell>
 
@@ -103,13 +102,13 @@ watch(
             {{ url.usage_count }}
           </TableCell>
           <TableCell>
-            <button v-if='!isEditing' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            <button v-if='!url.editable' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               @click='selectEdit(url)'>
               edit</button>
             <button v-else class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              @click="confirmEdit">confirm</button>
+              @click="confirmEdit(url)">confirm</button>
 
-            <button v-if="!isEditing" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            <button v-if="!url.editable" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               @click="deleteRow(url)">
               Delete
             </button>
