@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { UrlEntity } from "~/types";
+import { useToast } from "@/components/ui/toast/use-toast";
+import { Toaster } from "@/components/ui/toast";
 
+const { toast } = useToast();
 const { isMobile } = useDevice();
 const isLoading = ref(true);
 const props = defineProps<{
@@ -43,12 +46,16 @@ async function confirmEdit() {
     })
     .eq("url_id", updatedList.value[0].url_id);
 
-  // If there's an error, log it
   if (error) {
     console.error("Error updating row:", error.message);
   } else {
+
+    toast({
+      title: 'Success',
+      description: "Your URL has been updated",
+      // variant: "default",
+    });
     isEditing.value = false;
-    console.log("Row updated successfully");
   }
 }
 watch(
@@ -62,6 +69,7 @@ watch(
 
 <template>
   <div class="flex items-center w-full">
+    <Toaster />
     <div v-if="isLoading" class="mx-auto">Loading...</div>
     <Table v-else class="w-1/2 justify-center mx-auto">
       <TableCaption v-if="updatedList.length > 0">List of your Links</TableCaption>
@@ -80,7 +88,7 @@ watch(
           <TableCell class="font-medium w-2/4">
             <NuxtLink v-if='!isEditing' :to="url.short_url" target="_blank">{{
               url.short_url
-            }}</NuxtLink>
+              }}</NuxtLink>
             <br>
             <Input v-if='isEditing' v-model="url.long_url" />
             <NuxtLink v-if='!isEditing' :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{
