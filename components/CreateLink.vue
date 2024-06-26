@@ -6,7 +6,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import checkUser from "~/composables/checkUser";
 import generateQR from "~/composables/generateQR";
-import checkValidURL from "~/composables/checkValidURL";
+import validateURL from "~/composables/checkValidURL";
 const runtimeConfig = useRuntimeConfig();
 const supabase = useSupabaseClient();
 const user_id = useSupabaseUser().value?.id;
@@ -17,7 +17,7 @@ const shortenLink = async (type: "link" | "qr") => {
   highlighted.value = false
 
   checkUser();
-  if (!checkValidURL(long_url.value)) {
+  if (!validateURL(long_url.value)) {
     return;
   }
   newUrl.value = {
@@ -28,6 +28,7 @@ const shortenLink = async (type: "link" | "qr") => {
     user_id: user_id,
     usage_count: 0,
     qr_code: "",
+    editable: false,
   };
   if (type === "qr") {
     newUrl.value.qr_code = await generateQR(
