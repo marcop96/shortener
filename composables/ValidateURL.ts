@@ -1,5 +1,5 @@
-import { toast } from "~/components/ui/toast";
-
+import {   useToast } from "~/components/ui/toast";
+const {toast} = useToast();
 export default function validateURL(url: string): boolean {
   try {
     new URL(url);
