@@ -7,6 +7,10 @@ import { Button } from "~/components/ui/button";
 import checkUser from "~/composables/checkUser";
 import generateQR from "~/composables/generateQR";
 import validateURL from "~/composables/ValidateURL";
+
+import { Toaster } from "@/components/ui/toast";
+
+
 const runtimeConfig = useRuntimeConfig();
 const supabase = useSupabaseClient();
 const user_id = useSupabaseUser().value?.id;
@@ -54,6 +58,7 @@ const copyToClipboard = (text: string) => {
 </script>
 
 <template>
+  <Toaster />
   <div class="relative">
     <main class="flex justify-center">
       <form class="mx-auto" @submit.prevent="">
