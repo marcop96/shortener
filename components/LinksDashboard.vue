@@ -8,6 +8,8 @@ const props = defineProps<{
 }>();
 const client = useSupabaseClient();
 const updatedList = ref<UrlEntity[]>(props.shortened_urls);
+const isEditing = ref(false);
+
 async function deleteRow(row: UrlEntity) {
   try {
     const { error } = await client
@@ -26,6 +28,15 @@ async function deleteRow(row: UrlEntity) {
   } catch (err) {
     console.error("Unexpected error:", err);
   }
+}
+
+function editHanlder(row: UrlEntity) {
+  isEditing.value = true
+  console.log(`edithandler after changing value ${isEditing.value}`)
+}
+function confirmEdit() {
+  isEditing.value = false
+  console.log(`confirmEdit after changing value ${isEditing.value}`)
 }
 watch(
   () => props.shortened_urls,
@@ -54,11 +65,13 @@ watch(
       <TableBody>
         <TableRow v-for="url in updatedList" :key="url.short_url">
           <TableCell class="font-medium w-2/4">
-            <NuxtLink :to="url.short_url" target="_blank">{{
+            <NuxtLink v-if='!isEditing' :to="url.short_url" target="_blank">{{
               url.short_url
-            }}</NuxtLink>
+              }}</NuxtLink>
             <br>
-            <NuxtLink :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{ url.long_url }}</NuxtLink>
+            <Input v-if='isEditing' v-model="url.long_url" />
+            <NuxtLink v-if='!isEditing' :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{
+              url.long_url }}</NuxtLink>
           </TableCell>
 
           <TableCell class="h-24">
@@ -69,9 +82,17 @@ watch(
             {{ url.usage_count }}
           </TableCell>
           <TableCell>
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteRow(url)">
+            <button v-if='!isEditing' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              @click='editHanlder(url)'>
+              edit</button>
+            <button v-else class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              @click="confirmEdit">confirm</button>
+
+            <button v-if="!isEditing" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              @click="deleteRow(url)">
               Delete
             </button>
+
           </TableCell>
         </TableRow>
       </TableBody>
