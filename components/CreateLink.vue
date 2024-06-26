@@ -58,8 +58,8 @@ const copyToClipboard = (text: string) => {
 </script>
 
 <template>
-  <Toaster />
   <div class="relative">
+    <Toaster />
     <main class="flex justify-center">
       <form class="mx-auto" @submit.prevent="">
         <Input v-model="long_url" type="text" placeholder="Enter URL" class="m-2" />
