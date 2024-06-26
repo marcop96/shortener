@@ -30,13 +30,26 @@ async function deleteRow(row: UrlEntity) {
   }
 }
 
-function editHanlder(row: UrlEntity) {
+function selectEdit(row: UrlEntity) {
   isEditing.value = true
-  console.log(`edithandler after changing value ${isEditing.value}`)
+
+
 }
-function confirmEdit() {
-  isEditing.value = false
-  console.log(`confirmEdit after changing value ${isEditing.value}`)
+async function confirmEdit() {
+  const { error } = await client
+    .from("shortened_urls")
+    .update({
+      long_url: updatedList.value[0].long_url
+    })
+    .eq("url_id", updatedList.value[0].url_id);
+
+  // If there's an error, log it
+  if (error) {
+    console.error("Error updating row:", error.message);
+  } else {
+    isEditing.value = false;
+    console.log("Row updated successfully");
+  }
 }
 watch(
   () => props.shortened_urls,
@@ -67,7 +80,7 @@ watch(
           <TableCell class="font-medium w-2/4">
             <NuxtLink v-if='!isEditing' :to="url.short_url" target="_blank">{{
               url.short_url
-              }}</NuxtLink>
+            }}</NuxtLink>
             <br>
             <Input v-if='isEditing' v-model="url.long_url" />
             <NuxtLink v-if='!isEditing' :to="url.long_url" target="_blank" class="text-xs text-gray-400">{{
@@ -83,7 +96,7 @@ watch(
           </TableCell>
           <TableCell>
             <button v-if='!isEditing' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              @click='editHanlder(url)'>
+              @click='selectEdit(url)'>
               edit</button>
             <button v-else class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               @click="confirmEdit">confirm</button>
