@@ -33,7 +33,7 @@ const shortenLink = async (type: "link" | "qr") => {
     newUrl.value.qr_code = await generateQR(
       runtimeConfig.public.baseURL + newUrl.value.short_url
     );
-    console.log(newUrl.value.qr_code);
+
   }
   const { error } = await supabase
     .from("shortened_urls")
