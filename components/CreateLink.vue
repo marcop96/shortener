@@ -32,7 +32,6 @@ const shortenLink = async (type: "link" | "qr") => {
     user_id: user_id,
     usage_count: 0,
     qr_code: "",
-    editable: false,
   };
   if (type === "qr") {
     newUrl.value.qr_code = await generateQR(
@@ -101,7 +100,8 @@ const copyToClipboard = (text: string) => {
     </section> -->
     <section v-if="newUrl" class="mt-24">
       <div class="flex flex-row justify-center items-center">
-        <Input v-model="newUrl.short_url" readonly :class='highlighted ? "border border-2 border-green-300" : ""'
+        <Input
+v-model="newUrl.short_url" readonly :class='highlighted ? "border border-2 border-green-300" : ""'
           class="w-fit text-center bg-gray-100 p-2 rounded-lg" />
         <Button class="m-2 hover:cursor-pointer" @click="copyToClipboard(newUrl!.short_url)">Copy</Button>
       </div>
